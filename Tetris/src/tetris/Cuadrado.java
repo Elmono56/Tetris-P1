@@ -5,10 +5,17 @@
  */
 package tetris;
 
+import java.awt.Color;
+
 /**
  *
  * @author chave
  */
-class color {
+public class Cuadrado extends Bloques{
+    
+        public Cuadrado(){
+        super(new int[][]{{1,1},{1,1}},Color.YELLOW);
+        }
+        
     
 }
