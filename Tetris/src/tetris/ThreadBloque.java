@@ -20,6 +20,7 @@ public class ThreadBloque extends Thread{
     private int nivel=1;
     
     
+    
     public ThreadBloque(MatrizJuego matrizJuego, PantallaJuego pantalla){
     this.matrizJuego=matrizJuego;
     this.pantalla=pantalla;
@@ -34,11 +35,11 @@ public class ThreadBloque extends Thread{
         while(true){
         
            matrizJuego.generarBloques();
-           
+           pantalla.actualizarNivel(this.nivel);
            while(matrizJuego.limiteFinal()){//minetras que pueda seguir cayendo
                     matrizJuego.caer();
                 try {
-                     Thread.sleep(1100-(nivel*300));
+                     Thread.sleep(2000-(nivel*150));
 
                  } catch (InterruptedException ex) {
                      Logger.getLogger(ThreadBloque.class.getName()).log(Level.SEVERE, null, ex);
@@ -62,6 +63,14 @@ public class ThreadBloque extends Thread{
             }
             pantalla.actualizarLineas(lineas);
             
+        }
+    }
+    
+    public void aumentarNivel(){
+        
+        if (nivel<10){
+            this.nivel= this.nivel +1;
+            pantalla.actualizarNivel(this.nivel);
         }
     }
         

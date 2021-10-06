@@ -11,9 +11,10 @@ import javax.swing.JFrame;
  */
 public class PantallaJuego extends JFrame {
 
-    private  MatrizJuego matrizJuego;
+    private MatrizJuego matrizJuego;
     private KeyListener listener;
     private CronoThread cronometro;
+    private ThreadBloque hilo;
             
     public PantallaJuego() {
         initComponents();
@@ -41,7 +42,8 @@ public class PantallaJuego extends JFrame {
     
 public void inicio(){
     
-    new ThreadBloque(matrizJuego,this).start();
+    this.hilo = new ThreadBloque(matrizJuego,this);
+    hilo.start();
     
 }
     public void actualizarPuntos(int puntos){
@@ -61,9 +63,12 @@ public void inicio(){
     }
 
     public void setTextToCrono(String texto){
-        txtCrono.setText(texto);
+        this.txtCrono.setText(texto);
     }
-
+    
+    public void aumentarLevel(){
+        this.hilo.aumentarNivel();
+    }
 
 
 public void activarListener(KeyListener listener){
@@ -150,6 +155,7 @@ public void activarListener(KeyListener listener){
 
         txtnivel1.setEditable(false);
         txtnivel1.setBackground(new java.awt.Color(0, 102, 102));
+        txtnivel1.setFont(new java.awt.Font("Showcard Gothic", 0, 18)); // NOI18N
         txtnivel1.setForeground(new java.awt.Color(255, 255, 255));
         txtnivel1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
