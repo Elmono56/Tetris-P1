@@ -13,12 +13,14 @@ public class PantallaJuego extends JFrame {
 
     private  MatrizJuego matrizJuego;
     private KeyListener listener;
+    private CronoThread cronometro;
             
     public PantallaJuego() {
         initComponents();
         fondo1.setVisible(true);//panel izq
         fondo2.setVisible(true);//panel der
-        
+        cronometro = new CronoThread(this);
+        cronometro.start();
         matrizJuego=new MatrizJuego(pantalladeJuego);
         this.add(matrizJuego);
         activarListener(listener);
@@ -58,7 +60,9 @@ public void inicio(){
     
     }
 
-
+    public void setTextToCrono(String texto){
+        txtCrono.setText(texto);
+    }
 
 
 
@@ -126,6 +130,7 @@ public void activarListener(KeyListener listener){
         fondo1.setBackground(new java.awt.Color(0, 102, 102));
         fondo1.setPreferredSize(new java.awt.Dimension(160, 506));
 
+        txtCrono.setEditable(false);
         txtCrono.setBackground(new java.awt.Color(0, 102, 102));
         txtCrono.setForeground(new java.awt.Color(255, 255, 255));
         txtCrono.setHorizontalAlignment(javax.swing.JTextField.CENTER);

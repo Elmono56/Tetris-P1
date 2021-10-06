@@ -3,6 +3,7 @@ package tetris;
 
 import java.awt.Color;
 import java.awt.Graphics;//sirve para pintar
+import java.util.Random;
 import javax.swing.JPanel;//permite modificar el panel
 
 /**
@@ -11,54 +12,208 @@ import javax.swing.JPanel;//permite modificar el panel
  */
 public class MatrizJuego extends JPanel{
     
-    private int Filas=20;
-    private int Columnas=10;
+    private int filas=20;
+    private int columnas=10;
     private int tamañodeCelda;
     private Bloques bloque;
-    
+    private Color[][] finales;
+
+//constructor
     public MatrizJuego(JPanel pantalladeJuego){
         pantalladeJuego.setVisible(false);
         this.setBounds(pantalladeJuego.getBounds());//limite de pantalla de juego (tamaño del panel)
         this.setBackground(pantalladeJuego.getBackground());//pone color al area de juego 
         this.setBorder(pantalladeJuego.getBorder());//pone color al borde del area de juego
-        tamañodeCelda=this.getBounds().width / Columnas;
-        generarBloques();
+        tamañodeCelda=this.getBounds().width / columnas;//le asigna el tamaño a cada celda
+        finales= new Color[filas][columnas];
+
         
     }
+   
+
+//metodos de bloques en la matriz
     
     public void generarBloques(){
+    int num=(int) (Math.random() * 4);
+    switch(num){
+    case  0 -> bloque= new Rectangulo();
+    case  1 -> bloque= new Cuadrado();
+    case  2 -> bloque= new Ele();
+    case  3 -> bloque= new Zeta();
+   }
+    }
+    
 
-    bloque= new Bloques(new int[][] {{1,0},{1,0},{1,1}}, Color.RED);
+    
+   //limpiar lineas completas
+    
+    public int revisarMatriz(){
+        boolean lineaCompleta;
+        int lineasEliminadas=0;
+        for (int fila = filas-1; fila >= 0; fila--) {//recorre la matriz de abajo hacia arriba
+            
+            lineaCompleta=true;
+            for(int colu=0;colu<columnas;colu++){
+            
+                if(finales[fila][colu]==null){//si hay un espacio vacio en la linea omite la linea 
+                    lineaCompleta=false;
+                    break;
+                }
+            }
+            if(lineaCompleta){
+                lineasEliminadas++;
+                limpiarLinea(fila);
+                bajarLinea(fila);
+                limpiarLinea(0);
+                fila++;
+                repaint();
+            } 
+        }
+        
+        return lineasEliminadas;
+    }
+    
+    private void limpiarLinea(int fila){
+    
+        for (int i = 0; i < columnas; i++) {
+            finales[fila][i]=null;//pone la linea en blanco
+        }
+    }
+    
+    private void bajarLinea(int filaBajar){
+    //reccore la matrix desde la linea eliminada hasta arriba copiando el color de la fila superior
+        
+        for (int fila= filaBajar; fila>0; fila--){
+            for (int colu= 0; colu < columnas; colu++) {
+                finales[fila][colu]=finales[fila-1][colu];
+            }
+        }
+    
+    }
+    
+   
+
+
+//revisa los limites de la matriz 
+   
+    public boolean limiteFinal(){//hace que el bloque caiga hasta el final o al max   CHECKBOTTON
+       
+//si la suma del alto de la figura con el resto de la matriz == al numro de filas se detiene   
+        if(bloque.revisarFinal()==filas)return false;
+    
+        int[][]tamaño= bloque.getTamaño();
+        int ancho= bloque.getAncho();
+        int altura= bloque.getAltura();
+        for(int colu =0; colu<ancho; colu++){
+            for (int fila = altura-1; fila >=0; fila--) {
+                if(tamaño[fila][colu]!=0){
+                    int x= colu+bloque.getX();
+                    int y= fila+bloque.getY()+1;
+                    if(y<0) break;
+                    if(finales[y][x]!=null) return false;
+                    break;}
+            }
+        }
+        return true;
+    }
+    
+
+    public boolean limiteIzquierda(){
+        
+        if(bloque.revisarIzquierda()==0)return false;
+        
+        int[][]tamaño= bloque.getTamaño();
+        int ancho= bloque.getAncho();
+        int altura= bloque.getAltura();
+        for(int fila =0; fila<altura; fila++){
+            for (int colu = 0; colu<ancho; colu++) {
+                if(tamaño[fila][colu]!=0){
+                    int x= colu+bloque.getX()-1;
+                    int y= fila+bloque.getY();
+                    if(y<0) break;
+                    if(finales[y][x]!=null) return false;
+                    break;}
+            }
+        }       
+        return true;
+    }
+    
+    
+    public boolean limiteDerecha(){
+        if(bloque.revisarDerecha()==10)return false;
+        
+        int[][]tamaño= bloque.getTamaño();
+        int ancho= bloque.getAncho();
+        int altura= bloque.getAltura();
+        
+        for(int fila =0; fila<altura; fila++){
+            for (int colu = ancho-1; colu>=0; colu--) {
+                if(tamaño[fila][colu]!=0){
+                    int x= colu+bloque.getX()+1;
+                    int y= fila+bloque.getY();
+                    if(y<0) break;
+                    if(finales[y][x]!=null) return false;
+                    break;}
+            }
+        }       
+
+        return true;
 
     }
+    
+    
+    public boolean limiteTope(){
+        if(bloque.getY()<0){
+            bloque=null;
+            return true;
+        }
+        return false;
+    }
+    
 
+
+
+//metodos de pintar la matriz
+    
+    public void pegarEnMatriz(){
+    
+        int [][]cuadro=bloque.getTamaño();//cuadro de la matriz
+        int altura=bloque.getAltura();
+        int ancho= bloque.getAncho();
+        int posX= bloque.getX();
+        int posY= bloque.getY();
+        Color color=bloque.getColor();
+        
+        for (int fila = 0; fila < altura; fila++){    
+            for (int columna = 0; columna < ancho; columna++) {
+              
+                if(cuadro[fila][columna]==1){//si el cuadro está en 1 se pinta
+                    finales[fila + posY][columna + posX]=color;
+                }
+            }
+        }
     
     
     
+    }
     
-    private void ponerBloque(Graphics pintor){
+    private void pintarMatriz(Graphics pintor){//pinta el bloque cayendo en la matriz
         
         int altura=bloque.getAltura();
         int ancho=bloque.getAncho();
         int [][]tamaño=bloque.getTamaño();
         int x,y;
         Color color= bloque.getColor();
-        
-        
-    
+
         for (int fila = 0; fila < altura; fila++) {
             
             for (int columna = 0; columna < ancho; columna++) {
                 
                 if(tamaño[fila][columna]==1){//si el bloque de la matriz en ==1 entonces lo pinta
                     
-                    x= (bloque.getX()+columna)*tamañodeCelda;
-                    y= (bloque.getY()+fila)*tamañodeCelda;
-                            
-                    pintor.setColor(color);//color del bloque
-                    pintor.fillRect(x, y, tamañodeCelda, tamañodeCelda);//pinta el bloque
-                    pintor.setColor(Color.black);//color del borde del bloque
-                    pintor.drawRect(x, y, tamañodeCelda, tamañodeCelda);//pinta el borde del bloque
+                    x = (bloque.getX()+columna)*tamañodeCelda;
+                    y = (bloque.getY()+fila)*tamañodeCelda;
+                    pintar(x, y, pintor, color);//se encarga de pintar el bloque cayendo
                 }
             }
             
@@ -67,28 +222,91 @@ public class MatrizJuego extends JPanel{
     
     }
     
-    @Override
-    protected  void paintComponent(Graphics pintor){//se encarga de pintar cada espacio de la matriz
-     
-        super.paintComponent(pintor);//se encarga de pintar la pieza del tetris
+    public void pintarBloqueTetris(Graphics pintor){//permite pintar el bloque en su posicion max final
         
-        for (int y = 0; y < Filas; y++) {
+        Color celda;
+        int x,y;
+         for (int fila = 0; fila < filas; fila++) {
             
-            for (int x = 0; x < Columnas; x++) {
-
-                pintor.drawRect(x*tamañodeCelda, y*tamañodeCelda, tamañodeCelda, tamañodeCelda);
-                pintor.setColor(Color.gray);
-
+            for (int columna = 0; columna < columnas; columna++) {
+                
+                celda=finales[fila][columna];//posicion de la celda
+                
+                if(celda!=null){ //si no tiene ningun color entonce == null
+                    x=columna*tamañodeCelda;
+                    y=fila*tamañodeCelda;
+                    pintar(x, y, pintor,celda);//se encarga de pintar el bloque
+                }            
             }
-        }
-        ponerBloque(pintor);
+         }
+    }
+    
+    public void pintar(int x,int y, Graphics pintor, Color color){
+    
+        pintor.setColor(color);//color del bloque
+        pintor.fillRect(x, y, tamañodeCelda, tamañodeCelda);//rellena la posicion dada
+        pintor.setColor(Color.black);//color del borde del bloque
+        pintor.drawRect(x, y, tamañodeCelda, tamañodeCelda);//pinta el borde del bloque
+
+    }
+    
+
+
+//movimientos
+    
+    
+    public void izquierda(){
+        if(bloque==null)return;
+        if(!limiteIzquierda())return;
+        bloque.izq();
+        repaint();
+    }
+    
+    public void derecha(){
+        if(bloque==null)return;
+        if(!limiteDerecha())return ;
+        bloque.der();
+        repaint();
+    }
+    
+    public void rotar(){
+        if(bloque==null)return;
+        if(!limiteDerecha())return;
+        if(!limiteIzquierda())return;
+        bloque.rotar();
+        repaint();
+    }    
+    
+    public void caer(){//DROPBLOCK
+        if(bloque==null)return;
+        if(!limiteFinal())return;
+            bloque.caida();
+            repaint();
     }
     
     
     
     
     
-   
     
+    @Override
+    protected  void paintComponent(Graphics pintor){//se encarga de pintar cada espacio de la matriz
+     
+        super.paintComponent(pintor);//permite pintar la pieza de tetris
+        
+        for (int y = 0; y < filas; y++) {
+            
+            for (int x = 0; x < columnas; x++) {
+
+                pintor.drawRect(x*tamañodeCelda, y*tamañodeCelda, tamañodeCelda, tamañodeCelda);
+                pintor.setColor(Color.LIGHT_GRAY);//color del borde de la matriz
+
+            }
+        }        
+        pintarBloqueTetris(pintor);//permite pintar el bloque cuando toque el fondo maximo
+        pintarMatriz(pintor);//permite pintar el bloque cayendo
+
+    }
     
+
 }
