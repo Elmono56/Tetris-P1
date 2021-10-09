@@ -18,6 +18,7 @@ public class ThreadBloque extends Thread{
     private int puntaje;
     private int aux;
     private int nivel=1;
+    private boolean isRunning = true;
     
     
     
@@ -32,7 +33,7 @@ public class ThreadBloque extends Thread{
     public void run(){
         
         
-        while(true){
+        while(isRunning){
         
            matrizJuego.generarBloques();
            pantalla.actualizarNivel(this.nivel);
@@ -72,6 +73,10 @@ public class ThreadBloque extends Thread{
             this.nivel= this.nivel +1;
             pantalla.actualizarNivel(this.nivel);
         }
+    }
+    
+    public void setIsRunning(boolean estado){
+        this.isRunning = estado;
     }
         
     

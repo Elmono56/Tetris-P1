@@ -25,3 +25,17 @@ Tetris/nbproject/private/private.xml
 Tetris/nbproject/project.properties
 Tetris/nbproject/project.xml
 Tetris/build/classes/tetris/Sonido.class
+Tetris/build/classes/tetris/MenuInicio$1.class
+Tetris/build/classes/tetris/MenuInicio.class
+Tetris/build/classes/tetris/MenuInicio.form
+Tetris/build/classes/tetris/PantallaJuego$4.class
+Tetris/build/classes/tetris/PantallaJuego$5.class
+Tetris/build/classes/tetris/TopResultados.class
+Tetris/build/classes/tetris/TopResultados.form
+Tetris/src/tetris/TopResultados.form
+Tetris/src/tetris/PantallaJuego.form
+Tetris/src/tetris/MenuInicio.form
+Tetris/src/tetris/PantallaJuego.form
+Tetris/src/tetris/PantallaJuego.form
+Tetris/src/tetris/PantallaJuego.form
+*.form

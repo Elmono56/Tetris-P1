@@ -59,4 +59,8 @@ public class CronoThread extends Thread{
             return "0" + number;
         return "" + number;
     }
+    
+    public void setIsRunning(boolean estado){
+        this.isRunning = estado;
+    }
 }

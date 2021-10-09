@@ -22,6 +22,15 @@ public class Tetris {
         String path = "C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\music\\calamity.wav";
         
         cancion.playMusic(path);
+        
+        TopResultados mejores = new TopResultados();
+        
+        MenuInicio inicio = new MenuInicio(mejores);
+        
+        inicio.setVisible(true);
+        
+        
+        
     }
     
 }

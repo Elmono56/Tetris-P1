@@ -109,6 +109,8 @@ public void activarListener(KeyListener listener){
         lblLineas = new javax.swing.JLabel();
         txtnivel1 = new javax.swing.JTextField();
         txtLineas = new javax.swing.JTextField();
+        btnPausar = new javax.swing.JButton();
+        btnReanudar = new javax.swing.JButton();
         fondo2 = new javax.swing.JPanel();
         lblPuntos = new javax.swing.JLabel();
         txtPuntos = new javax.swing.JTextField();
@@ -165,22 +167,42 @@ public void activarListener(KeyListener listener){
         txtLineas.setForeground(new java.awt.Color(255, 255, 255));
         txtLineas.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
+        btnPausar.setText("Pausar");
+        btnPausar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPausarActionPerformed(evt);
+            }
+        });
+
+        btnReanudar.setText("Reanudar");
+        btnReanudar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReanudarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout fondo1Layout = new javax.swing.GroupLayout(fondo1);
         fondo1.setLayout(fondo1Layout);
         fondo1Layout.setHorizontalGroup(
             fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fondo1Layout.createSequentialGroup()
-                .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(fondo1Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(lblNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtnivel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(fondo1Layout.createSequentialGroup()
-                            .addGap(19, 19, 19)
-                            .addComponent(txtCrono, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(txtLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(fondo1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtnivel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(fondo1Layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(txtCrono, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(fondo1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnPausar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnReanudar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(fondo1Layout.createSequentialGroup()
@@ -199,7 +221,11 @@ public void activarListener(KeyListener listener){
                     .addComponent(txtnivel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addComponent(txtLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnPausar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnReanudar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(145, 145, 145))
             .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(fondo1Layout.createSequentialGroup()
                     .addGap(207, 207, 207)
@@ -307,6 +333,20 @@ public void activarListener(KeyListener listener){
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCronoActionPerformed
 
+    private void btnPausarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPausarActionPerformed
+        
+        //this.hilo.setIsRunning(false);
+        //this.cronometro.setIsRunning(false);
+        
+    }//GEN-LAST:event_btnPausarActionPerformed
+
+    private void btnReanudarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReanudarActionPerformed
+        
+        //this.hilo.setIsRunning(true);
+        //this.cronometro.setIsRunning(true);
+        
+    }//GEN-LAST:event_btnReanudarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -348,6 +388,8 @@ public void activarListener(KeyListener listener){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Figura2;
     private javax.swing.JPanel Figura3;
+    private javax.swing.JButton btnPausar;
+    private javax.swing.JButton btnReanudar;
     private javax.swing.JPanel fondo1;
     private javax.swing.JPanel fondo2;
     private javax.swing.JLabel lblLineas;
