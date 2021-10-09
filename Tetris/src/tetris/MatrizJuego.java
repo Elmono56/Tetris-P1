@@ -3,7 +3,7 @@ package tetris;
 
 import java.awt.Color;
 import java.awt.Graphics;//sirve para pintar
-import java.util.Random;
+import javax.swing.JLabel;
 import javax.swing.JPanel;//permite modificar el panel
 
 /**
@@ -15,11 +15,15 @@ public class MatrizJuego extends JPanel{
     private int filas=20;
     private int columnas=10;
     private int tamañodeCelda;
+    public JLabel f2;
+    public JLabel f3;
     private Bloques bloque;
     private Color[][] finales;
 
-//constructor
-    public MatrizJuego(JPanel pantalladeJuego){
+    //constructor
+    public MatrizJuego(JPanel pantalladeJuego,JLabel figura2,JLabel figura3){
+        this.f2 = figura2;
+        this.f3 = figura3;
         pantalladeJuego.setVisible(false);
         this.setBounds(pantalladeJuego.getBounds());//limite de pantalla de juego (tamaño del panel)
         this.setBackground(pantalladeJuego.getBackground());//pone color al area de juego 
@@ -31,10 +35,9 @@ public class MatrizJuego extends JPanel{
     }
    
 
-//metodos de bloques en la matriz
+    //metodos de bloques en la matriz
     
-    public void generarBloques(){
-    int num=(int) (Math.random() * 4);
+    public void generarBloques(int num){
     switch(num){
     case  0 -> bloque= new Rectangulo();
     case  1 -> bloque= new Cuadrado();
@@ -94,11 +97,11 @@ public class MatrizJuego extends JPanel{
    
 
 
-//revisa los limites de la matriz 
+    //revisa los limites de la matriz 
    
     public boolean limiteFinal(){//hace que el bloque caiga hasta el final o al max   CHECKBOTTON
        
-//si la suma del alto de la figura con el resto de la matriz == al numro de filas se detiene   
+    //si la suma del alto de la figura con el resto de la matriz == al numro de filas se detiene   
         if(bloque.revisarFinal()==filas)return false;
     
         int[][]tamaño= bloque.getTamaño();
@@ -270,12 +273,22 @@ public class MatrizJuego extends JPanel{
     }
     
     public void rotar(){
-        if(bloque==null)return;
-        if(!limiteDerecha())return;
-        if(!limiteIzquierda())return;
+        if(bloque==null)return; 
+        
         bloque.rotar();
-        repaint();
-    }    
+
+        if( bloque.revisarDerecha()>=columnas)
+            bloque.setX(columnas - bloque.getAncho());
+        
+        
+        if(bloque.revisarIzquierda()<0)
+            bloque.setX(0);
+        
+        if (bloque.revisarFinal()>=filas) bloque.setY(filas - bloque.getAltura());
+        
+        verificar();//evita que los bloques se traspasen 
+    }
+
     
     public void caer(){//DROPBLOCK
         if(bloque==null)return;
@@ -285,7 +298,27 @@ public class MatrizJuego extends JPanel{
     }
     
     
-    
+    public void verificar(){
+
+    for(int fila = 0; fila < bloque.getAltura(); fila++) {
+           for( int col = 0; col < bloque.getAncho(); col++) {
+               if(bloque.getTamaño()[fila][col] != 0) {
+                   int x = col + bloque.getX();
+                   int y = fila + bloque.getY();
+                   if(y < 0)
+                       break;
+                   if(finales[y][x] != null){
+                      bloque.regresar();
+                       repaint();
+                       return;
+                   }
+                       
+               }
+           }
+       }
+        repaint();
+   }
+
     
     
     

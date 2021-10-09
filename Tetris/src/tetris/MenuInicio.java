@@ -5,6 +5,8 @@
  */
 package tetris;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author hidal
@@ -13,6 +15,7 @@ public class MenuInicio extends javax.swing.JFrame {
     
     PantallaJuego tetrisgame;
     TopResultados mejoresjugadas;
+    ArrayList<Integer> puntajes;
     
     /**
      * Creates new form Menu
@@ -20,6 +23,7 @@ public class MenuInicio extends javax.swing.JFrame {
     public MenuInicio(PantallaJuego tetris, TopResultados mejores) {
         this.tetrisgame = tetris;
         this.mejoresjugadas = mejores;
+        this.puntajes = new ArrayList<Integer>();
         initComponents();
     }
 
@@ -116,11 +120,16 @@ public class MenuInicio extends javax.swing.JFrame {
 
     private void btntop10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntop10ActionPerformed
         this.mejoresjugadas.setVisible(true);
+        this.mejoresjugadas.setPuntajes(this.puntajes);
+        this.mejoresjugadas.inicio();
+        this.mejoresjugadas.setDefaultCloseOperation(HIDE_ON_CLOSE);
     }//GEN-LAST:event_btntop10ActionPerformed
 
     private void btnempezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnempezarActionPerformed
         this.tetrisgame.setVisible(true);
+        this.tetrisgame.setPuntajes(this.puntajes);
         this.tetrisgame.inicio();
+        this.tetrisgame.setDefaultCloseOperation(HIDE_ON_CLOSE);
     }//GEN-LAST:event_btnempezarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

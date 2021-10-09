@@ -3,6 +3,7 @@ package tetris;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 
 /**
@@ -17,22 +18,24 @@ public class PantallaJuego extends JFrame {
     private ThreadBloque hilo;
     private Sonido cancion;
     private String path;
+    private ArrayList<Integer> puntajes;
             
     public PantallaJuego(Sonido cancion, String path) {
         initComponents();
         fondo1.setVisible(true);//panel izq
         fondo2.setVisible(true);//panel der
+        JLabelFig2.setVisible(true);
+        JLabelFig3.setVisible(true);
         cronometro = new CronoThread(this);
-        matrizJuego=new MatrizJuego(pantalladeJuego);
+        matrizJuego=new MatrizJuego(pantalladeJuego,JLabelFig2,JLabelFig3);
         this.add(matrizJuego);
         this.cancion = cancion;
         this.path = path;
+        
         activarListener(listener);
         this.addKeyListener(listener);
         this.lblPuntos.addKeyListener(listener);
         this.txtPuntos.addKeyListener(listener);
-        this.Figura2.addKeyListener(listener);
-        this.Figura3.addKeyListener(listener);
         this.txtCrono.addKeyListener(listener);
         this.lblNivel.addKeyListener(listener);
         this.txtnivel1.addKeyListener(listener);
@@ -40,6 +43,12 @@ public class PantallaJuego extends JFrame {
         this.lblLineas.addKeyListener(listener);
        
     }
+
+    public void setPuntajes(ArrayList<Integer> puntajes) {
+        this.puntajes = puntajes;
+    }
+    
+    
     
     public void inicio(){
         this.hilo = new ThreadBloque(matrizJuego,this);
@@ -96,8 +105,18 @@ public void activarListener(KeyListener listener){
      };
 
     }    
+
+    public void guardarPuntaje(){
+        String puntos = txtPuntos.getText();
+        
+        //int puntaje = puntos;
+    }
+
+
     
-    
+    public void detenerCronometro(){
+        this.cronometro.setIsRunning(false);
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -110,13 +129,11 @@ public void activarListener(KeyListener listener){
         lblLineas = new javax.swing.JLabel();
         txtnivel1 = new javax.swing.JTextField();
         txtLineas = new javax.swing.JTextField();
-        btnPausar = new javax.swing.JButton();
-        btnReanudar = new javax.swing.JButton();
         fondo2 = new javax.swing.JPanel();
         lblPuntos = new javax.swing.JLabel();
         txtPuntos = new javax.swing.JTextField();
-        Figura2 = new javax.swing.JPanel();
-        Figura3 = new javax.swing.JPanel();
+        JLabelFig2 = new javax.swing.JLabel();
+        JLabelFig3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -140,6 +157,7 @@ public void activarListener(KeyListener listener){
 
         txtCrono.setEditable(false);
         txtCrono.setBackground(new java.awt.Color(0, 102, 102));
+        txtCrono.setFont(new java.awt.Font("Snap ITC", 0, 18)); // NOI18N
         txtCrono.setForeground(new java.awt.Color(255, 255, 255));
         txtCrono.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCrono.addActionListener(new java.awt.event.ActionListener() {
@@ -168,42 +186,22 @@ public void activarListener(KeyListener listener){
         txtLineas.setForeground(new java.awt.Color(255, 255, 255));
         txtLineas.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        btnPausar.setText("Pausar");
-        btnPausar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPausarActionPerformed(evt);
-            }
-        });
-
-        btnReanudar.setText("Reanudar");
-        btnReanudar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReanudarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout fondo1Layout = new javax.swing.GroupLayout(fondo1);
         fondo1.setLayout(fondo1Layout);
         fondo1Layout.setHorizontalGroup(
             fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fondo1Layout.createSequentialGroup()
-                .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(txtLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(fondo1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(lblNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtnivel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(fondo1Layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(txtCrono, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(fondo1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnPausar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnReanudar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(fondo1Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(lblNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtnivel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(fondo1Layout.createSequentialGroup()
+                            .addGap(19, 19, 19)
+                            .addComponent(txtCrono, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(fondo1Layout.createSequentialGroup()
@@ -222,11 +220,7 @@ public void activarListener(KeyListener listener){
                     .addComponent(txtnivel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addComponent(txtLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnPausar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnReanudar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(145, 145, 145))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(fondo1Layout.createSequentialGroup()
                     .addGap(207, 207, 207)
@@ -250,27 +244,11 @@ public void activarListener(KeyListener listener){
         txtPuntos.setForeground(new java.awt.Color(255, 255, 255));
         txtPuntos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        javax.swing.GroupLayout Figura2Layout = new javax.swing.GroupLayout(Figura2);
-        Figura2.setLayout(Figura2Layout);
-        Figura2Layout.setHorizontalGroup(
-            Figura2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        Figura2Layout.setVerticalGroup(
-            Figura2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        JLabelFig2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        JLabelFig2.setFocusable(false);
 
-        javax.swing.GroupLayout Figura3Layout = new javax.swing.GroupLayout(Figura3);
-        Figura3.setLayout(Figura3Layout);
-        Figura3Layout.setHorizontalGroup(
-            Figura3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        Figura3Layout.setVerticalGroup(
-            Figura3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        JLabelFig3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        JLabelFig3.setFocusable(false);
 
         javax.swing.GroupLayout fondo2Layout = new javax.swing.GroupLayout(fondo2);
         fondo2.setLayout(fondo2Layout);
@@ -281,21 +259,21 @@ public void activarListener(KeyListener listener){
                 .addGroup(fondo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtPuntos)
                     .addGroup(fondo2Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addGroup(fondo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Figura2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23)
+                        .addGroup(fondo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(JLabelFig2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblPuntos, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Figura3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 43, Short.MAX_VALUE)))
+                            .addComponent(JLabelFig3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 21, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         fondo2Layout.setVerticalGroup(
             fondo2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fondo2Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(Figura2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(Figura3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addComponent(JLabelFig2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(JLabelFig3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblPuntos, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -311,7 +289,7 @@ public void activarListener(KeyListener listener){
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(fondo1, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addComponent(fondo1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pantalladeJuego, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -336,7 +314,7 @@ public void activarListener(KeyListener listener){
 
     private void btnPausarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPausarActionPerformed
         
-        //this.hilo.setIsRunning(false);
+        this.detenerCronometro();
         //this.cronometro.setIsRunning(false);
         
     }//GEN-LAST:event_btnPausarActionPerformed
@@ -349,10 +327,8 @@ public void activarListener(KeyListener listener){
     }//GEN-LAST:event_btnReanudarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel Figura2;
-    private javax.swing.JPanel Figura3;
-    private javax.swing.JButton btnPausar;
-    private javax.swing.JButton btnReanudar;
+    private javax.swing.JLabel JLabelFig2;
+    private javax.swing.JLabel JLabelFig3;
     private javax.swing.JPanel fondo1;
     private javax.swing.JPanel fondo2;
     private javax.swing.JLabel lblLineas;

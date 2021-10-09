@@ -14,7 +14,7 @@ import java.awt.Color;
 public class Rectangulo extends Bloques{
     
     public Rectangulo(){
-        super(new int[][]{{1,1,1,1}},Color.BLUE);
+        super(new int[][]{{1,1,1,1}},Color.CYAN);
         }
         
     

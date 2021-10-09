@@ -5,12 +5,16 @@
  */
 package tetris;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author hidal
  */
 public class TopResultados extends javax.swing.JFrame {
-
+    
+    private ArrayList<Integer> puntajes;
+    
     /**
      * Creates new form TopResultados
      */
@@ -18,6 +22,17 @@ public class TopResultados extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void setPuntajes(ArrayList<Integer> puntajes) {
+        this.puntajes = puntajes;
+    }
+    
+    
+    public void inicio(){
+        
+    }
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
