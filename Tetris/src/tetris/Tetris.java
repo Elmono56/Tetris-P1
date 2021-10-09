@@ -21,11 +21,11 @@ public class Tetris {
         
         String path = "C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\music\\calamity.wav";
         
-        cancion.playMusic(path);
-        
         TopResultados mejores = new TopResultados();
         
-        MenuInicio inicio = new MenuInicio(mejores);
+        PantallaJuego tetrisgame = new PantallaJuego(cancion,path);
+        
+        MenuInicio inicio = new MenuInicio(tetrisgame,mejores);
         
         inicio.setVisible(true);
         

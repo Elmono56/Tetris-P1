@@ -15,15 +15,18 @@ public class PantallaJuego extends JFrame {
     private KeyListener listener;
     private CronoThread cronometro;
     private ThreadBloque hilo;
+    private Sonido cancion;
+    private String path;
             
-    public PantallaJuego() {
+    public PantallaJuego(Sonido cancion, String path) {
         initComponents();
         fondo1.setVisible(true);//panel izq
         fondo2.setVisible(true);//panel der
         cronometro = new CronoThread(this);
-        cronometro.start();
         matrizJuego=new MatrizJuego(pantalladeJuego);
         this.add(matrizJuego);
+        this.cancion = cancion;
+        this.path = path;
         activarListener(listener);
         this.addKeyListener(listener);
         this.lblPuntos.addKeyListener(listener);
@@ -40,12 +43,12 @@ public class PantallaJuego extends JFrame {
        
     }
     
-public void inicio(){
-    
-    this.hilo = new ThreadBloque(matrizJuego,this);
-    hilo.start();
-    
-}
+    public void inicio(){
+        this.hilo = new ThreadBloque(matrizJuego,this);
+        this.hilo.start();
+        this.cronometro.start();
+        this.cancion.playMusic(this.path);
+    }
     public void actualizarPuntos(int puntos){
     
         this.txtPuntos.setText(""+puntos);
@@ -346,44 +349,6 @@ public void activarListener(KeyListener listener){
         //this.cronometro.setIsRunning(true);
         
     }//GEN-LAST:event_btnReanudarActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PantallaJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PantallaJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PantallaJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PantallaJuego.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PantallaJuego().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Figura2;
