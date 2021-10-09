@@ -38,8 +38,6 @@ public class PantallaJuego extends JFrame {
         this.txtnivel1.addKeyListener(listener);
         this.txtLineas.addKeyListener(listener);
         this.lblLineas.addKeyListener(listener);
-        
-        inicio();
        
     }
     
