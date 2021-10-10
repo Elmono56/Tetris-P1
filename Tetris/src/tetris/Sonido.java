@@ -37,6 +37,19 @@ public class Sonido {
             
         }
     }
+    
+    public void stopMusic(String filepath){
+        try{
+            File musicpath = new File(filepath);
+            AudioInputStream music = AudioSystem.getAudioInputStream(musicpath);
+            Clip clip = AudioSystem.getClip();
+            long clipTimePosition = clip.getMicrosecondPosition();
+            clip.stop();
+        }
+        catch (Exception e){
+            
+        }
+    }
 
 }
 

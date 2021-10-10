@@ -25,6 +25,7 @@ public class ThreadBloque extends Thread{
     private ImageIcon i2= new ImageIcon(getClass().getResource("/Imagenes/cubo.jpg"));
     private ImageIcon i3= new ImageIcon(getClass().getResource("/Imagenes/ele.jpg"));
     private ImageIcon i4= new ImageIcon(getClass().getResource("/Imagenes/zeta.jpg"));
+    private boolean ganador = false;
 
     
     
@@ -66,6 +67,13 @@ public class ThreadBloque extends Thread{
            if(matrizJuego.limiteTope()){//si el bloque toca el tope de la matriz se termina el juego
                this.pantalla.detenerCronometro();
                 JOptionPane.showMessageDialog(pantalla, "PERDISTE","Error", JOptionPane.ERROR_MESSAGE);
+                this.pantalla.guardarPuntaje();
+                break;
+           }
+           if (ganador){
+               this.pantalla.detenerCronometro();
+               JOptionPane.showMessageDialog(pantalla, "GANASTE","FELICIDADES", JOptionPane.INFORMATION_MESSAGE);
+               this.pantalla.guardarPuntaje();
                 break;
            }
             matrizJuego.pegarEnMatriz();
@@ -106,9 +114,10 @@ public class ThreadBloque extends Thread{
     public void setIsRunning(boolean estado){
         this.isRunning = estado;
     }
-        
     
-         
     
+    public void setGanador(boolean sino){
+        this.ganador = sino;
+    }
     
 }

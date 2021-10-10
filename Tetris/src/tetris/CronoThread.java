@@ -42,6 +42,10 @@ public class CronoThread extends Thread{
                 String newTime = setNiceFormat(minutes) + ":" + setNiceFormat(seconds); 
                 refPantalla.setTextToCrono(newTime);
                 
+                if (refPantalla.getNivel()==9 & minutes==2){
+                    this.refPantalla.setGanador(true);
+                }
+                
                 if ((minutes%2)==0 & (minutes>1)){
                     refPantalla.aumentarLevel();
                     seconds=0;

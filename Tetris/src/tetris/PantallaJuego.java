@@ -4,6 +4,8 @@ package tetris;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import javax.swing.JFrame;
 
 /**
@@ -57,19 +59,15 @@ public class PantallaJuego extends JFrame {
         this.cancion.playMusic(this.path);
     }
     public void actualizarPuntos(int puntos){
-    
         this.txtPuntos.setText(""+puntos);
-    
     }
     
     public void actualizarLineas(int lineas){
-    
         this.txtLineas.setText(""+lineas);
-    
     }
+    
     public void actualizarNivel(int nivel){
         this.txtnivel1.setText(""+nivel);
-    
     }
 
     public void setTextToCrono(String texto){
@@ -104,15 +102,39 @@ public void activarListener(KeyListener listener){
             }
      };
 
-    }    
+    }
+
+    public int getNivel(){
+        String nivelstr = this.txtnivel1.getText();
+        return Integer.parseInt(nivelstr);
+    }
 
     public void guardarPuntaje(){
         String puntos = txtPuntos.getText();
+        int cantpuntos = Integer.parseInt(puntos);
         
-        //int puntaje = puntos;
+        int largo = this.puntajes.size();
+        
+        if (largo<10){
+            this.puntajes.add(cantpuntos);
+            Collections.sort(puntajes);
+        }
+        else{
+            Collections.sort(puntajes);
+            for (int puntaje : puntajes){
+                if (puntaje<cantpuntos){
+                    puntajes.remove(puntaje);
+                    puntajes.add(cantpuntos);
+                    break;
+                }
+            }
+            Collections.sort(puntajes);
+        }
     }
 
-
+    public void setGanador(boolean sino){
+        this.hilo.setGanador(sino);
+    }
     
     public void detenerCronometro(){
         this.cronometro.setIsRunning(false);

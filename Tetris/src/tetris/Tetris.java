@@ -19,7 +19,7 @@ public class Tetris {
         
         Sonido cancion = new Sonido();
         
-        String path = "C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\music\\calamity.wav";
+        String path = "C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\music\\lofi.wav";
         
         TopResultados mejores = new TopResultados();
         
