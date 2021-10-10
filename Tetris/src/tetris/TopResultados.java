@@ -28,7 +28,16 @@ public class TopResultados extends javax.swing.JFrame {
     
     
     public void inicio(){
-        
+        String auxiliar = "\t TOP 10 MEJORES PUNTAJES \n";
+        int top = 1;
+        for (int puntaje : puntajes){
+            if (puntaje==0){
+                break;
+            }
+            auxiliar=auxiliar+"Top "+top+"\t"+puntaje+"\n";
+            top++;
+        }
+        this.txtAreaTop.setText(auxiliar);
     }
     
     

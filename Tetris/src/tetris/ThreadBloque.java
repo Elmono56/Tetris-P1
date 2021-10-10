@@ -68,12 +68,14 @@ public class ThreadBloque extends Thread{
                this.pantalla.detenerCronometro();
                 JOptionPane.showMessageDialog(pantalla, "PERDISTE","Error", JOptionPane.ERROR_MESSAGE);
                 this.pantalla.guardarPuntaje();
+                this.pantalla.setVisible(false);
                 break;
            }
            if (ganador){
                this.pantalla.detenerCronometro();
                JOptionPane.showMessageDialog(pantalla, "GANASTE","FELICIDADES", JOptionPane.INFORMATION_MESSAGE);
                this.pantalla.guardarPuntaje();
+               this.pantalla.setVisible(false);
                 break;
            }
             matrizJuego.pegarEnMatriz();
