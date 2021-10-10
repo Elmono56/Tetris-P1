@@ -117,7 +117,7 @@ public void activarListener(KeyListener listener){
         
         if (largo<10){
             this.puntajes.add(cantpuntos);
-            Collections.sort(puntajes);
+             Collections.sort(puntajes, Collections.reverseOrder());
         }
         else{
             Collections.sort(puntajes);
@@ -128,7 +128,7 @@ public void activarListener(KeyListener listener){
                     break;
                 }
             }
-            Collections.sort(puntajes);
+            Collections.sort(puntajes, Collections.reverseOrder());
         }
     }
 

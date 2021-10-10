@@ -13,17 +13,20 @@ import java.util.ArrayList;
  */
 public class MenuInicio extends javax.swing.JFrame {
     
-    PantallaJuego tetrisgame;
-    TopResultados mejoresjugadas;
-    ArrayList<Integer> puntajes;
+    private TopResultados mejoresjugadas;
+    private ArrayList<Integer> puntajes;
+    private Sonido cancion;
+    private String path;
+    
     
     /**
      * Creates new form Menu
      */
-    public MenuInicio(PantallaJuego tetris, TopResultados mejores) {
-        this.tetrisgame = tetris;
+    public MenuInicio(Sonido cancion, String path, TopResultados mejores) {
         this.mejoresjugadas = mejores;
         this.puntajes = new ArrayList<Integer>();
+        this.cancion = cancion;
+        this.path = path;
         initComponents();
     }
 
@@ -126,10 +129,11 @@ public class MenuInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btntop10ActionPerformed
 
     private void btnempezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnempezarActionPerformed
-        this.tetrisgame.setVisible(true);
-        this.tetrisgame.setPuntajes(this.puntajes);
-        this.tetrisgame.inicio();
-        this.tetrisgame.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        PantallaJuego tetrisgame = new PantallaJuego(cancion,path);
+        tetrisgame.setPuntajes(this.puntajes);
+        tetrisgame.inicio();
+        tetrisgame.setVisible(true);
+        tetrisgame.setDefaultCloseOperation(HIDE_ON_CLOSE);
     }//GEN-LAST:event_btnempezarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

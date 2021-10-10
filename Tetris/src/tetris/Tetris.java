@@ -23,9 +23,7 @@ public class Tetris {
         
         TopResultados mejores = new TopResultados();
         
-        PantallaJuego tetrisgame = new PantallaJuego(cancion,path);
-        
-        MenuInicio inicio = new MenuInicio(tetrisgame,mejores);
+        MenuInicio inicio = new MenuInicio(cancion,path,mejores);
         
         inicio.setVisible(true);
         
