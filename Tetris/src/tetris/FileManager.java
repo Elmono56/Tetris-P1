@@ -73,6 +73,9 @@ public class FileManager {
                 int numero = Integer.parseInt(line);
                 puntajes.add(numero);
             }
+            if (puntajes.isEmpty()==true){
+                return null;
+            }
             return puntajes;
         }
         catch (IOException e) {

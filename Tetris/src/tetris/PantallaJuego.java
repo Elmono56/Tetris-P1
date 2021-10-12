@@ -119,7 +119,12 @@ public void activarListener(KeyListener listener){
         this.puntajes = archivo.getPuntajes(jugadaspath);
         int largo = this.puntajes.size();
         String puntosfinal = "";
-        if (largo<10){
+        
+        if (largo==0){
+            this.puntajes.add(cantpuntos);
+            this.archivo.writeToFile(jugadaspath, puntos);
+        }
+        else if (largo<10){
             this.puntajes.add(cantpuntos);
              Collections.sort(puntajes, Collections.reverseOrder());
              puntos = "\n"+puntos;

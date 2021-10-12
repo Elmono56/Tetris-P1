@@ -41,14 +41,21 @@ public class TopResultados extends javax.swing.JFrame {
         int top = 1;
         this.puntajes = this.archivo.getPuntajes(jugadaspath);
         
-        for (int puntaje : puntajes){
-            if (puntaje==0){
-                break;
-            }
-            auxiliar=auxiliar+"Top "+top+"\t"+puntaje+"\n";
-            top++;
+        if (puntajes==null){
+            auxiliar = auxiliar + "\n No hay puntajes guardados";
+            this.txtAreaTop.setText(auxiliar);
         }
-        this.txtAreaTop.setText(auxiliar);
+        else{
+            for (int puntaje : puntajes){
+                if (puntaje==0){
+                    break;
+                }
+                auxiliar=auxiliar+"Top "+top+"\t"+puntaje+"\n";
+                top++;
+                }
+            this.txtAreaTop.setText(auxiliar);
+            }
+        
     }
     
     
