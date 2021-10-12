@@ -5,7 +5,9 @@
  */
 package tetris;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,19 +21,28 @@ public class MenuInicio extends javax.swing.JFrame {
     private String path;
     private String jugadaspath;
     private FileManager archivo;
+    private String pathMemoria;
+    private FileManager datos;
+    private String info;
+    private Color[][] finales;
+    private Guardar boxguardar;
     
     /**
      * Creates new form Menu
      */
-    public MenuInicio(Sonido cancion, String path, TopResultados mejores,String jugadaspath,FileManager archivo) {
+    public MenuInicio(Sonido cancion, String path, TopResultados mejores,String jugadaspath,FileManager archivo,String memoria) {
         this.mejoresjugadas = mejores;
-        this.puntajes = new ArrayList<Integer>();
+        this.puntajes = archivo.getPuntajes(jugadaspath);
         this.cancion = cancion;
         this.path = path;
         this.jugadaspath = jugadaspath;
         this.archivo = archivo;
         this.mejoresjugadas.setArchivo(archivo);
         this.mejoresjugadas.setJugadaspath(jugadaspath);
+        this.pathMemoria = memoria;
+        this.datos = new FileManager();
+        this.info = "";
+        this.finales = new Color[20][10];
         initComponents();
     }
 
@@ -48,7 +59,7 @@ public class MenuInicio extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnempezar = new javax.swing.JButton();
         btntop10 = new javax.swing.JButton();
-        btnreanudar = new javax.swing.JButton();
+        btncargar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,7 +82,12 @@ public class MenuInicio extends javax.swing.JFrame {
             }
         });
 
-        btnreanudar.setText("REANUDAR PARTIDA");
+        btncargar.setText("CARGAR PARTIDA");
+        btncargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncargarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -89,7 +105,7 @@ public class MenuInicio extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btntop10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(85, 85, 85)
-                                .addComponent(btnreanudar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(btncargar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(122, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -102,7 +118,7 @@ public class MenuInicio extends javax.swing.JFrame {
                 .addGap(131, 131, 131)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btntop10, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnreanudar, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btncargar, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(137, Short.MAX_VALUE))
         );
 
@@ -134,16 +150,63 @@ public class MenuInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btntop10ActionPerformed
 
     private void btnempezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnempezarActionPerformed
-        PantallaJuego tetrisgame = new PantallaJuego(cancion,path,jugadaspath,archivo);
+        PantallaJuego tetrisgame = new PantallaJuego(cancion,path,jugadaspath,archivo,pathMemoria);
         tetrisgame.setPuntajes(this.puntajes);
         tetrisgame.inicio();
         tetrisgame.setVisible(true);
         tetrisgame.setDefaultCloseOperation(HIDE_ON_CLOSE);
     }//GEN-LAST:event_btnempezarActionPerformed
 
+    private Color[][] valoresMatriz(String colores){
+        Color [][] cargar=new Color[20][10];
+        int pos=0;
+        for (int fila = 0; fila < 20; fila++) {
+        for (int columna = 0; columna < 10; columna++) {
+                if(colores.substring(pos, pos+1).equals("1"))cargar[fila][columna]=Color.CYAN;
+                if(colores.substring(pos, pos+1).equals("2"))cargar[fila][columna]=Color.ORANGE;
+                if(colores.substring(pos, pos+1).equals("3"))cargar[fila][columna]=Color.YELLOW;
+                if(colores.substring(pos, pos+1).equals("4"))cargar[fila][columna]=Color.GREEN;
+                if(colores.substring(pos, pos+1).equals("0"))cargar[fila][columna]=null;
+                pos++;
+            }
+        }
+       return cargar;    
+       
+    }
+
+    
+    
+    private void btncargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargarActionPerformed
+        
+        int segundos,minutos,lineas,puntos,nivel,f1,f2,f3;
+        
+        this.pathMemoria=JOptionPane.showInputDialog(boxguardar, "favor ingrese el nombre del archiv", "ABRIR", 1).toUpperCase();
+       
+        this.info=datos.readFile(this.pathMemoria);
+        this.finales=valoresMatriz(this.info.substring(0, 200));        
+       
+        PantallaJuego tetrisgame = new PantallaJuego(cancion,path,pathMemoria,archivo,finales);
+        tetrisgame.setPuntajes(this.puntajes);
+        tetrisgame.inicio();
+        tetrisgame.setVisible(true);
+        tetrisgame.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        
+//        nivel=Integer.parseInt(this.info.substring(207, 208));//nivel
+//        puntos=Integer.parseInt(this.info.substring(216, 217));//puntos
+//        lineas=Integer.parseInt(this.info.substring(225, 226));//lineas
+//        
+//        f1=Integer.parseInt(this.info.substring(230, 231));// figura cayendo
+//        f2=Integer.parseInt(this.info.substring(235, 236));//Figura 2
+//        f3=Integer.parseInt(this.info.substring(240, 241));//Figura 3
+//        segundos=Integer.parseInt(this.info.substring(251, 252));//Figura 2
+//        minutos=Integer.parseInt(this.info.substring(233, 234));//Figura 2        
+//        System.out.println(segundos);
+    
+    }//GEN-LAST:event_btncargarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btncargar;
     private javax.swing.JButton btnempezar;
-    private javax.swing.JButton btnreanudar;
     private javax.swing.JButton btntop10;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

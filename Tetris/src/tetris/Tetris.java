@@ -25,11 +25,13 @@ public class Tetris {
         
         String jugadaspath = "C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\src\\tetris\\MejoresJugadas.txt";
         
+        String memoria = "C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\src\\tetris\\memoria";
+        
         archivo.createFile(jugadaspath);
         
         TopResultados mejores = new TopResultados();
         
-        MenuInicio inicio = new MenuInicio(cancion,path,mejores,jugadaspath,archivo);
+        MenuInicio inicio = new MenuInicio(cancion,path,mejores,jugadaspath,archivo,memoria);
         
         inicio.setVisible(true);
         

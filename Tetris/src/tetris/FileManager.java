@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -70,12 +71,13 @@ public class FileManager {
             ArrayList<Integer> puntajes = new ArrayList<Integer>();
             String line;
             while ((line = br.readLine()) != null) {
-                int numero = Integer.parseInt(line);
+                int numero = (int) Integer.parseInt(line);
                 puntajes.add(numero);
             }
             if (puntajes.isEmpty()==true){
                 return null;
             }
+            Collections.sort(puntajes, Collections.reverseOrder());
             return puntajes;
         }
         catch (IOException e) {

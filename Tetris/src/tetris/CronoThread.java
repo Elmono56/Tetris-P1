@@ -17,6 +17,7 @@ public class CronoThread extends Thread{
     private boolean isRunning = true;
     private int seconds = 0;
     private int minutes = 0;
+    private boolean isPaused = false;
 
     public CronoThread(PantallaJuego refPantalla) {
         this.refPantalla = refPantalla;
@@ -51,7 +52,9 @@ public class CronoThread extends Thread{
                     seconds=0;
                     minutes=0;
                 }
-                
+                while (isPaused){
+                    sleep(500);
+                }
             } catch (InterruptedException ex) {
                 
             }
@@ -67,5 +70,21 @@ public class CronoThread extends Thread{
     public void setIsRunning(boolean estado){
         this.isRunning = estado;
     }
+    
+    public void pauseThreadCrono(){
+        this.isPaused = true;
+    }
+        public void reanudarThreadCrono(){
+        this.isPaused = false;
+    }
+
+    public String getSeconds() {
+        return ""+seconds;
+    }
+
+    public String getMinutes() {
+        return ""+minutes;
+    }
+
     
 }

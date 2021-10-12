@@ -19,9 +19,20 @@ public class MatrizJuego extends JPanel{
     public JLabel f3;
     private Bloques bloque;
     private Color[][] finales;
+    public String resultado;
 
     //constructor
     public MatrizJuego(JPanel pantalladeJuego,JLabel figura2,JLabel figura3){
+        iniciar(pantalladeJuego,figura2,figura3);
+        finales= new Color[filas][columnas];
+    }
+    
+    public MatrizJuego(JPanel pantalladeJuego,JLabel figura2,JLabel figura3,Color[][] aux){
+        iniciar(pantalladeJuego,figura2,figura3);
+        finales= aux;
+    }
+    
+    public void iniciar(JPanel pantalladeJuego,JLabel figura2,JLabel figura3){
         this.f2 = figura2;
         this.f3 = figura3;
         pantalladeJuego.setVisible(false);
@@ -29,9 +40,7 @@ public class MatrizJuego extends JPanel{
         this.setBackground(pantalladeJuego.getBackground());//pone color al area de juego 
         this.setBorder(pantalladeJuego.getBorder());//pone color al borde del area de juego
         tamañodeCelda=this.getBounds().width / columnas;//le asigna el tamaño a cada celda
-        finales= new Color[filas][columnas];
-
-        
+        this.resultado = "";
     }
    
 
@@ -252,6 +261,35 @@ public class MatrizJuego extends JPanel{
         pintor.drawRect(x, y, tamañodeCelda, tamañodeCelda);//pinta el borde del bloque
 
     }
+    
+    
+    
+    //guarda la informacion de la matriz
+    
+    public String revisar(){  
+        
+        Color celda;
+        for (int fila = 0; fila < filas; fila++) {
+            
+            for (int columna = 0; columna < columnas; columna++) {
+                
+                celda=(Color)finales[fila][columna];//posicion de la celda
+                System.out.println(celda);
+                if(celda!=null){
+                   if(celda==Color.CYAN)resultado+=1;
+                   if(celda==Color.ORANGE)resultado+=2;
+                   if(celda==Color.YELLOW)resultado+=3;
+                   if(celda==Color.GREEN)resultado+=4;
+                }else{
+                      resultado+=0;
+                }
+
+                }
+                
+            }
+         return resultado+"\n";
+    }
+
     
 
 

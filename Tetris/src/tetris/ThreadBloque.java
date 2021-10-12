@@ -20,11 +20,15 @@ public class ThreadBloque extends Thread{
     private int puntaje;
     private int aux;
     private int nivel=1;
+    private int f1,f2,f3;
+    private Random r;
+    private boolean isPaused = false;
     private boolean isRunning = true;
     private ImageIcon i1= new ImageIcon(getClass().getResource("/Imagenes/rectangulo.jpg"));
     private ImageIcon i2= new ImageIcon(getClass().getResource("/Imagenes/cubo.jpg"));
     private ImageIcon i3= new ImageIcon(getClass().getResource("/Imagenes/ele.jpg"));
     private ImageIcon i4= new ImageIcon(getClass().getResource("/Imagenes/zeta.jpg"));
+    public String resu;
     private boolean ganador = false;
 
     
@@ -32,17 +36,18 @@ public class ThreadBloque extends Thread{
     public ThreadBloque(MatrizJuego matrizJuego, PantallaJuego pantalla){
         this.matrizJuego=matrizJuego;
         this.pantalla=pantalla;
+        this.resu="";
+        r= new Random();
+        this.f1=r.nextInt(4);
+        this.f2=r.nextInt(4);
+        this.f3=r.nextInt(4);
+
     }
     
     
     
     @Override
     public void run(){
-        Random r= new Random();
-        int f1=r.nextInt(4);
-        int f2=r.nextInt(4);
-        int f3=r.nextInt(4);
-
         
         while(isRunning){
             
@@ -58,6 +63,10 @@ public class ThreadBloque extends Thread{
                     matrizJuego.caer();
                 try {
                      Thread.sleep(2000-(nivel*150));
+                     while (isPaused){
+                         sleep(500);
+                     }
+                     
 
                  } catch (InterruptedException ex) {
                      Logger.getLogger(ThreadBloque.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,14 +76,14 @@ public class ThreadBloque extends Thread{
            if(matrizJuego.limiteTope()){//si el bloque toca el tope de la matriz se termina el juego
                this.pantalla.detenerCronometro();
                 JOptionPane.showMessageDialog(pantalla, "PERDISTE","Error", JOptionPane.ERROR_MESSAGE);
-                this.pantalla.guardarPuntaje();
+                this.pantalla.guardarPuntaje(); //REVISAR
                 this.pantalla.setVisible(false);
                 break;
            }
            if (ganador){
                this.pantalla.detenerCronometro();
                JOptionPane.showMessageDialog(pantalla, "GANASTE","FELICIDADES", JOptionPane.INFORMATION_MESSAGE);
-               this.pantalla.guardarPuntaje();
+               this.pantalla.guardarPuntaje(); //REVISAR
                this.pantalla.setVisible(false);
                 break;
            }
@@ -103,6 +112,22 @@ public class ThreadBloque extends Thread{
         }
          return i1;
     }
+    
+    
+    
+    
+    public String procesoGuardado(){
+        
+        resu+=matrizJuego.revisar();
+        resu+=nivel+"\n"; //nivel
+        resu+=puntaje+"\n"; //puntos
+        resu+=lineas+"\n"; //lineas
+        resu+=f1+"\n"; //F1
+        resu+=f2+"\n"; //F2
+        resu+=f3+"\n"; //F3
+        return resu;
+    }
+
 
     
     public void aumentarNivel(){
@@ -122,4 +147,11 @@ public class ThreadBloque extends Thread{
         this.ganador = sino;
     }
     
+    public void pauseThread(){
+        this.isPaused = true;
+    }
+    
+    public void reanudarThread(){
+        this.isPaused = false;
+    }
 }

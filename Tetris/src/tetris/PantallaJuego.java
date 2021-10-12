@@ -1,12 +1,13 @@
 
 package tetris;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,31 +24,40 @@ public class PantallaJuego extends JFrame {
     private ArrayList<Integer> puntajes;
     private String jugadaspath;
     private FileManager archivo;
+    private String pathMemoria;
+    private String guardar;
+    private FileManager datos;
+    private Guardar boxGuardar;
             
-    public PantallaJuego(Sonido cancion, String path,String jugadaspath,FileManager archivo) {
+    public PantallaJuego(Sonido cancion, String path,String jugadaspath,FileManager archivo,String memoria) {
+        this.cronometro = new CronoThread(this);
+        activarTodo(cancion,path,jugadaspath,archivo);
+        matrizJuego=new MatrizJuego(pantalladeJuego,JLabelFig2,JLabelFig3);
+        this.add(matrizJuego);
+    }
+    
+    public PantallaJuego(Sonido cancion, String path,String jugadaspath,FileManager archivo,Color[][] aux){
+        this.cronometro = new CronoThread(this);
+        activarTodo(cancion,path,jugadaspath,archivo);
+        matrizJuego=new MatrizJuego(pantalladeJuego,JLabelFig2,JLabelFig3,aux);
+        this.add(matrizJuego);
+    }
+    
+    public void activarTodo(Sonido cancion, String path,String jugadaspath,FileManager archivo){
         initComponents();
         fondo1.setVisible(true);//panel izq
         fondo2.setVisible(true);//panel der
         JLabelFig2.setVisible(true);
         JLabelFig3.setVisible(true);
-        cronometro = new CronoThread(this);
-        matrizJuego=new MatrizJuego(pantalladeJuego,JLabelFig2,JLabelFig3);
-        this.add(matrizJuego);
         this.cancion = cancion;
         this.path = path;
+        this.datos = null;
         this.jugadaspath = jugadaspath;
         this.archivo = archivo;
-        
+        this.pathMemoria = "";
+        this.guardar = "";
         activarListener(listener);
         this.addKeyListener(listener);
-        this.lblPuntos.addKeyListener(listener);
-        this.txtPuntos.addKeyListener(listener);
-        this.txtCrono.addKeyListener(listener);
-        this.lblNivel.addKeyListener(listener);
-        this.txtnivel1.addKeyListener(listener);
-        this.txtLineas.addKeyListener(listener);
-        this.lblLineas.addKeyListener(listener);
-       
     }
 
     public void setPuntajes(ArrayList<Integer> puntajes) {
@@ -167,6 +177,9 @@ public void activarListener(KeyListener listener){
         lblLineas = new javax.swing.JLabel();
         txtnivel1 = new javax.swing.JTextField();
         txtLineas = new javax.swing.JTextField();
+        btnpausar = new javax.swing.JButton();
+        btnreanudar = new javax.swing.JButton();
+        btnguardar = new javax.swing.JButton();
         fondo2 = new javax.swing.JPanel();
         lblPuntos = new javax.swing.JLabel();
         txtPuntos = new javax.swing.JTextField();
@@ -191,6 +204,7 @@ public void activarListener(KeyListener listener){
         );
 
         fondo1.setBackground(new java.awt.Color(0, 102, 102));
+        fondo1.setFocusable(false);
         fondo1.setPreferredSize(new java.awt.Dimension(160, 506));
 
         txtCrono.setEditable(false);
@@ -198,6 +212,7 @@ public void activarListener(KeyListener listener){
         txtCrono.setFont(new java.awt.Font("Snap ITC", 0, 18)); // NOI18N
         txtCrono.setForeground(new java.awt.Color(255, 255, 255));
         txtCrono.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtCrono.setFocusable(false);
         txtCrono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCronoActionPerformed(evt);
@@ -207,22 +222,50 @@ public void activarListener(KeyListener listener){
         lblNivel.setFont(new java.awt.Font("Snap ITC", 3, 18)); // NOI18N
         lblNivel.setForeground(new java.awt.Color(255, 255, 255));
         lblNivel.setText("NIVEL:");
+        lblNivel.setFocusable(false);
 
         lblLineas.setFont(new java.awt.Font("Snap ITC", 3, 18)); // NOI18N
         lblLineas.setForeground(new java.awt.Color(255, 255, 255));
         lblLineas.setText("LINEAS:");
+        lblLineas.setFocusable(false);
 
         txtnivel1.setEditable(false);
         txtnivel1.setBackground(new java.awt.Color(0, 102, 102));
         txtnivel1.setFont(new java.awt.Font("Showcard Gothic", 0, 18)); // NOI18N
         txtnivel1.setForeground(new java.awt.Color(255, 255, 255));
         txtnivel1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtnivel1.setFocusable(false);
 
         txtLineas.setEditable(false);
         txtLineas.setBackground(new java.awt.Color(0, 102, 102));
         txtLineas.setFont(new java.awt.Font("Showcard Gothic", 0, 18)); // NOI18N
         txtLineas.setForeground(new java.awt.Color(255, 255, 255));
         txtLineas.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtLineas.setFocusable(false);
+
+        btnpausar.setText("PAUSAR");
+        btnpausar.setFocusable(false);
+        btnpausar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnpausarActionPerformed(evt);
+            }
+        });
+
+        btnreanudar.setText("REANUDAR");
+        btnreanudar.setFocusable(false);
+        btnreanudar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnreanudarActionPerformed(evt);
+            }
+        });
+
+        btnguardar.setText("GUARDAR");
+        btnguardar.setFocusable(false);
+        btnguardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnguardarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout fondo1Layout = new javax.swing.GroupLayout(fondo1);
         fondo1.setLayout(fondo1Layout);
@@ -233,14 +276,22 @@ public void activarListener(KeyListener listener){
                     .addComponent(txtLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(fondo1Layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(lblNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtnivel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(fondo1Layout.createSequentialGroup()
                             .addGap(19, 19, 19)
-                            .addComponent(txtCrono, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtCrono, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(fondo1Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(fondo1Layout.createSequentialGroup()
+                                    .addComponent(lblNivel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtnivel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(fondo1Layout.createSequentialGroup()
+                                    .addGap(42, 42, 42)
+                                    .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(btnreanudar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnpausar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnguardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))))
+                .addContainerGap(48, Short.MAX_VALUE))
             .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(fondo1Layout.createSequentialGroup()
                     .addGap(10, 10, 10)
@@ -258,6 +309,12 @@ public void activarListener(KeyListener listener){
                     .addComponent(txtnivel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addComponent(txtLineas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
+                .addComponent(btnpausar)
+                .addGap(34, 34, 34)
+                .addComponent(btnreanudar)
+                .addGap(38, 38, 38)
+                .addComponent(btnguardar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(fondo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(fondo1Layout.createSequentialGroup()
@@ -271,16 +328,19 @@ public void activarListener(KeyListener listener){
         txtLineas.getAccessibleContext().setAccessibleParent(pantalladeJuego);
 
         fondo2.setBackground(new java.awt.Color(0, 102, 102));
+        fondo2.setFocusable(false);
 
         lblPuntos.setFont(new java.awt.Font("Snap ITC", 3, 18)); // NOI18N
         lblPuntos.setForeground(new java.awt.Color(255, 255, 255));
         lblPuntos.setText("PUNTOS:");
+        lblPuntos.setFocusable(false);
 
         txtPuntos.setEditable(false);
         txtPuntos.setBackground(new java.awt.Color(0, 102, 102));
         txtPuntos.setFont(new java.awt.Font("Snap ITC", 0, 24)); // NOI18N
         txtPuntos.setForeground(new java.awt.Color(255, 255, 255));
         txtPuntos.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPuntos.setFocusable(false);
 
         JLabelFig2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         JLabelFig2.setFocusable(false);
@@ -364,9 +424,35 @@ public void activarListener(KeyListener listener){
         
     }//GEN-LAST:event_btnReanudarActionPerformed
 
+    private void btnpausarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpausarActionPerformed
+        this.cronometro.pauseThreadCrono();
+        this.hilo.pauseThread();
+    }//GEN-LAST:event_btnpausarActionPerformed
+
+    private void btnreanudarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreanudarActionPerformed
+        this.cronometro.reanudarThreadCrono();
+        this.hilo.reanudarThread();
+    }//GEN-LAST:event_btnreanudarActionPerformed
+
+    private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
+        btnpausar.doClick();
+        this.guardar=this.hilo.procesoGuardado();
+        this.guardar+=this.cronometro.getSeconds()+"\n"; //segundos
+        this.guardar+=cronometro.getMinutes()+"\n"; //minutos
+        this.datos=new FileManager();
+        this.pathMemoria+=JOptionPane.showInputDialog(boxGuardar, "favor ingrese su nombre", "GUARDAR", 2).toUpperCase();
+        this.datos.createFile(this.pathMemoria);
+        this.datos.writeToFile(this.pathMemoria, this.guardar);
+        this.setVisible(false);
+
+    }//GEN-LAST:event_btnguardarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JLabelFig2;
     private javax.swing.JLabel JLabelFig3;
+    private javax.swing.JButton btnguardar;
+    private javax.swing.JButton btnpausar;
+    private javax.swing.JButton btnreanudar;
     private javax.swing.JPanel fondo1;
     private javax.swing.JPanel fondo2;
     private javax.swing.JLabel lblLineas;
