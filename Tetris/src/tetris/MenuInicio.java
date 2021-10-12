@@ -17,16 +17,21 @@ public class MenuInicio extends javax.swing.JFrame {
     private ArrayList<Integer> puntajes;
     private Sonido cancion;
     private String path;
-    
+    private String jugadaspath;
+    private FileManager archivo;
     
     /**
      * Creates new form Menu
      */
-    public MenuInicio(Sonido cancion, String path, TopResultados mejores) {
+    public MenuInicio(Sonido cancion, String path, TopResultados mejores,String jugadaspath,FileManager archivo) {
         this.mejoresjugadas = mejores;
         this.puntajes = new ArrayList<Integer>();
         this.cancion = cancion;
         this.path = path;
+        this.jugadaspath = jugadaspath;
+        this.archivo = archivo;
+        this.mejoresjugadas.setArchivo(archivo);
+        this.mejoresjugadas.setJugadaspath(jugadaspath);
         initComponents();
     }
 
@@ -129,7 +134,7 @@ public class MenuInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btntop10ActionPerformed
 
     private void btnempezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnempezarActionPerformed
-        PantallaJuego tetrisgame = new PantallaJuego(cancion,path);
+        PantallaJuego tetrisgame = new PantallaJuego(cancion,path,jugadaspath,archivo);
         tetrisgame.setPuntajes(this.puntajes);
         tetrisgame.inicio();
         tetrisgame.setVisible(true);

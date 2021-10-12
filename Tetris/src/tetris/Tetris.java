@@ -19,11 +19,17 @@ public class Tetris {
         
         Sonido cancion = new Sonido();
         
-        String path = "C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\music\\lofi.wav";
+        String path = ""; //"C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\music\\lofi.wav";
+        
+        String jugadaspath = "C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\src\\tetris\\MejoresJugadas.txt";
+        
+        FileManager archivo = new FileManager();
+        
+        archivo.createFile(jugadaspath);
         
         TopResultados mejores = new TopResultados();
         
-        MenuInicio inicio = new MenuInicio(cancion,path,mejores);
+        MenuInicio inicio = new MenuInicio(cancion,path,mejores,jugadaspath,archivo);
         
         inicio.setVisible(true);
         

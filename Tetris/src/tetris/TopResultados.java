@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class TopResultados extends javax.swing.JFrame {
     
     private ArrayList<Integer> puntajes;
+    private String jugadaspath;
+    private FileManager archivo;
     
     /**
      * Creates new form TopResultados
@@ -25,11 +27,20 @@ public class TopResultados extends javax.swing.JFrame {
     public void setPuntajes(ArrayList<Integer> puntajes) {
         this.puntajes = puntajes;
     }
-    
+
+    public void setJugadaspath(String jugadaspath) {
+        this.jugadaspath = jugadaspath;
+    }
+
+    public void setArchivo(FileManager archivo) {
+        this.archivo = archivo;
+    }
     
     public void inicio(){
         String auxiliar = "\t TOP 10 MEJORES PUNTAJES \n";
         int top = 1;
+        this.puntajes = this.archivo.getPuntajes(jugadaspath);
+        
         for (int puntaje : puntajes){
             if (puntaje==0){
                 break;

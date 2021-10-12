@@ -21,8 +21,10 @@ public class PantallaJuego extends JFrame {
     private Sonido cancion;
     private String path;
     private ArrayList<Integer> puntajes;
+    private String jugadaspath;
+    private FileManager archivo;
             
-    public PantallaJuego(Sonido cancion, String path) {
+    public PantallaJuego(Sonido cancion, String path,String jugadaspath,FileManager archivo) {
         initComponents();
         fondo1.setVisible(true);//panel izq
         fondo2.setVisible(true);//panel der
@@ -33,6 +35,8 @@ public class PantallaJuego extends JFrame {
         this.add(matrizJuego);
         this.cancion = cancion;
         this.path = path;
+        this.jugadaspath = jugadaspath;
+        this.archivo = archivo;
         
         activarListener(listener);
         this.addKeyListener(listener);
@@ -112,14 +116,17 @@ public void activarListener(KeyListener listener){
     public void guardarPuntaje(){
         String puntos = txtPuntos.getText();
         int cantpuntos = Integer.parseInt(puntos);
-        
+        this.puntajes = archivo.getPuntajes(jugadaspath);
         int largo = this.puntajes.size();
-        
+        String puntosfinal = "";
         if (largo<10){
             this.puntajes.add(cantpuntos);
              Collections.sort(puntajes, Collections.reverseOrder());
+             puntos = "\n"+puntos;
+             this.archivo.writeToFile(jugadaspath, puntos);
         }
         else{
+            this.archivo.cleanFile(jugadaspath);
             Collections.sort(puntajes);
             for (int puntaje : puntajes){
                 if (puntaje<cantpuntos){
@@ -128,6 +135,10 @@ public void activarListener(KeyListener listener){
                     break;
                 }
             }
+            for (int puntaje : puntajes){
+                puntosfinal = puntosfinal + puntaje + "\n";
+            }
+            this.archivo.writeToFile(jugadaspath, puntosfinal);
             Collections.sort(puntajes, Collections.reverseOrder());
         }
     }

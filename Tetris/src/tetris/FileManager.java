@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -32,8 +33,7 @@ public class FileManager {
         }
     }
     
-    public String readFile(String filePath) 
-    {
+    public String readFile(String filePath){
         
         StringBuilder contentBuilder = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) 
@@ -50,4 +50,36 @@ public class FileManager {
         }
         return contentBuilder.toString();
     }
+    
+    public void cleanFile(String filepath){
+        try(BufferedReader br = new BufferedReader(new FileReader(filepath))) 
+        {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line ="";
+            }
+        }
+        catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+    
+    public ArrayList<Integer> getPuntajes(String filepath){
+        try(BufferedReader br = new BufferedReader(new FileReader(filepath))) {
+            ArrayList<Integer> puntajes = new ArrayList<Integer>();
+            String line;
+            while ((line = br.readLine()) != null) {
+                int numero = Integer.parseInt(line);
+                puntajes.add(numero);
+            }
+            return puntajes;
+        }
+        catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 }
