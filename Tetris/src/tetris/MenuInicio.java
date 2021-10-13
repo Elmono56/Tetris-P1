@@ -150,6 +150,7 @@ public class MenuInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btntop10ActionPerformed
 
     private void btnempezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnempezarActionPerformed
+        this.archivo.cleanFile(jugadaspath);
         PantallaJuego tetrisgame = new PantallaJuego(cancion,path,jugadaspath,archivo,pathMemoria);
         tetrisgame.setPuntajes(this.puntajes);
         tetrisgame.inicio();
@@ -174,33 +175,72 @@ public class MenuInicio extends javax.swing.JFrame {
        
     }
 
-    
+    private String setNiceFormat(int number){
+        if (number < 10)
+            return "0" + number;
+        return "" + number;
+    }
     
     private void btncargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargarActionPerformed
         
-        int segundos,minutos,lineas,puntos,nivel,f1,f2,f3;
+        try{
+            PantallaJuego tetrisgame = new PantallaJuego(cancion,path,pathMemoria,archivo,finales);
+           
+            this.pathMemoria=JOptionPane.showInputDialog(boxguardar, "favor ingrese el nombre del archiv", "ABRIR", 1).toUpperCase();
+             
+            ArrayList<String> partidag = archivo.getDatosFromArchivo(pathMemoria);
+            
+            String tiempo ="";
+            
+            for (int i = 0; i<partidag.size()-1;i++){
+                
+                String dato = partidag.get(i);
+                
+                if (i==0){ //matriz
+                    this.finales=valoresMatriz(dato.substring(0, 200));    
+                }
+                else if (i==1){ //nivel
+                    int numero = (int) Integer.parseInt(dato);
+                    tetrisgame.actualizarNivel(numero);
+                }
+                else if (i==2){ //ountos
+                    int numero = (int) Integer.parseInt(dato);
+                    tetrisgame.actualizarPuntos(numero);
+                }
+                else if (i==3){ //F1
+                    int numero = (int) Integer.parseInt(dato);
+                    ThreadBloque hilo = tetrisgame.getHilo();
+                    hilo.setFigura1(numero);
+                }
+                else if (i==4){ //F2
+                    int numero = (int) Integer.parseInt(dato);
+                    ThreadBloque hilo = tetrisgame.getHilo();
+                    hilo.setFigura2(numero);
+                }
+                else if (i==5){ //F3
+                    int numero = (int) Integer.parseInt(dato);
+                    ThreadBloque hilo = tetrisgame.getHilo();
+                    hilo.setFigura3(numero);
+                }
+                else if (i==6){ //segundos
+                    int numero = (int) Integer.parseInt(dato);
+                    tiempo = setNiceFormat(numero) + ":";
+                    
+                }
+                else if (i==7){ //minutos
+                    int numero = (int) Integer.parseInt(dato);
+                    tiempo = tiempo + setNiceFormat(numero);
+                    tetrisgame.setTextToCrono(tiempo);
+                }
+            }
+            tetrisgame.inicio();
+            tetrisgame.setVisible(true);
+            tetrisgame.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        }
+        catch (Exception e){
+            JOptionPane.showMessageDialog(this, "PARTIDA NO ENCONTRADA","Error", JOptionPane.ERROR_MESSAGE);
+        }
         
-        this.pathMemoria=JOptionPane.showInputDialog(boxguardar, "favor ingrese el nombre del archiv", "ABRIR", 1).toUpperCase();
-       
-        this.info=datos.readFile(this.pathMemoria);
-        this.finales=valoresMatriz(this.info.substring(0, 200));        
-       
-        PantallaJuego tetrisgame = new PantallaJuego(cancion,path,pathMemoria,archivo,finales);
-        tetrisgame.setPuntajes(this.puntajes);
-        tetrisgame.inicio();
-        tetrisgame.setVisible(true);
-        tetrisgame.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        
-//        nivel=Integer.parseInt(this.info.substring(207, 208));//nivel
-//        puntos=Integer.parseInt(this.info.substring(216, 217));//puntos
-//        lineas=Integer.parseInt(this.info.substring(225, 226));//lineas
-//        
-//        f1=Integer.parseInt(this.info.substring(230, 231));// figura cayendo
-//        f2=Integer.parseInt(this.info.substring(235, 236));//Figura 2
-//        f3=Integer.parseInt(this.info.substring(240, 241));//Figura 3
-//        segundos=Integer.parseInt(this.info.substring(251, 252));//Figura 2
-//        minutos=Integer.parseInt(this.info.substring(233, 234));//Figura 2        
-//        System.out.println(segundos);
     
     }//GEN-LAST:event_btncargarActionPerformed
 

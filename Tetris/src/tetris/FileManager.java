@@ -87,4 +87,22 @@ public class FileManager {
         return null;
     }
     
+    public ArrayList<String> getDatosFromArchivo(String path){
+        try(BufferedReader br = new BufferedReader(new FileReader(path))) {
+            ArrayList<String> datos = new ArrayList<String>();
+            String line;
+            while ((line = br.readLine()) != null) {
+                datos.add(line);
+            }
+            if (datos.isEmpty()==true){
+                return null;
+            }
+            return datos; 
+        }
+        catch (Exception e){
+            
+        }
+        return null;
+    }
+    
 }

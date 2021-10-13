@@ -44,6 +44,17 @@ public class ThreadBloque extends Thread{
 
     }
     
+    public void setFigura1(int numero){
+        this.f1 = numero;
+    }
+    
+    public void setFigura2(int numero){
+        this.f2 = numero;
+    }
+    
+    public void setFigura3(int numero){
+        this.f3 = numero;
+    }
     
     
     @Override

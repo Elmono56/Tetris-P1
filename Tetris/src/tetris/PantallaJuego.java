@@ -64,7 +64,9 @@ public class PantallaJuego extends JFrame {
         this.puntajes = puntajes;
     }
     
-    
+    public ThreadBloque getHilo(){
+        return this.hilo;
+    }
     
     public void inicio(){
         this.hilo = new ThreadBloque(matrizJuego,this);
@@ -132,13 +134,13 @@ public void activarListener(KeyListener listener){
         
         if (largo==0){
             this.puntajes.add(cantpuntos);
-            this.archivo.writeToFile(jugadaspath, puntos);
+            //this.archivo.writeToFile(jugadaspath, puntos);
         }
         else if (largo<10){
             this.puntajes.add(cantpuntos);
              Collections.sort(puntajes, Collections.reverseOrder());
              puntos = "\n"+puntos;
-             this.archivo.writeToFile(jugadaspath, puntos);
+             //this.archivo.writeToFile(jugadaspath, puntos);
         }
         else{
             this.archivo.cleanFile(jugadaspath);
@@ -153,7 +155,7 @@ public void activarListener(KeyListener listener){
             for (int puntaje : puntajes){
                 puntosfinal = puntosfinal + puntaje + "\n";
             }
-            this.archivo.writeToFile(jugadaspath, puntosfinal);
+            //this.archivo.writeToFile(jugadaspath, puntosfinal);
             Collections.sort(puntajes, Collections.reverseOrder());
         }
     }
