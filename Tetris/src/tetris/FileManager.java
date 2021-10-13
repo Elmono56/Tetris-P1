@@ -6,10 +6,12 @@
 package tetris;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -53,12 +55,11 @@ public class FileManager {
     }
     
     public void cleanFile(String filepath){
-        try(BufferedReader br = new BufferedReader(new FileReader(filepath))) 
+        try 
         {
-            String line;
-            while ((line = br.readLine()) != null) {
-                line ="";
-            }
+            BufferedWriter bw = new BufferedWriter(new FileWriter(filepath, false));
+            bw.write("");
+            
         }
         catch (IOException e) {
             System.out.println("An error occurred.");

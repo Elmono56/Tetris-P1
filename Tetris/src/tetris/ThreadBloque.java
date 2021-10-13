@@ -30,10 +30,11 @@ public class ThreadBloque extends Thread{
     private ImageIcon i4= new ImageIcon(getClass().getResource("/Imagenes/zeta.jpg"));
     public String resu;
     private boolean ganador = false;
+    private Sonido cancion;
 
     
     
-    public ThreadBloque(MatrizJuego matrizJuego, PantallaJuego pantalla){
+    public ThreadBloque(MatrizJuego matrizJuego, PantallaJuego pantalla,Sonido cancion){
         this.matrizJuego=matrizJuego;
         this.pantalla=pantalla;
         this.resu="";
@@ -41,6 +42,7 @@ public class ThreadBloque extends Thread{
         this.f1=r.nextInt(4);
         this.f2=r.nextInt(4);
         this.f3=r.nextInt(4);
+        this.cancion = cancion;
 
     }
     
@@ -89,6 +91,7 @@ public class ThreadBloque extends Thread{
                 JOptionPane.showMessageDialog(pantalla, "PERDISTE","Error", JOptionPane.ERROR_MESSAGE);
                 this.pantalla.guardarPuntaje(); //REVISAR
                 this.pantalla.setVisible(false);
+                this.cancion.stopMusic();
                 break;
            }
            if (ganador){
@@ -96,7 +99,8 @@ public class ThreadBloque extends Thread{
                JOptionPane.showMessageDialog(pantalla, "GANASTE","FELICIDADES", JOptionPane.INFORMATION_MESSAGE);
                this.pantalla.guardarPuntaje(); //REVISAR
                this.pantalla.setVisible(false);
-                break;
+               this.cancion.stopMusic();
+               break;
            }
             matrizJuego.pegarEnMatriz();
             aux=matrizJuego.revisarMatriz();

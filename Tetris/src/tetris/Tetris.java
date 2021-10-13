@@ -14,12 +14,8 @@ public class Tetris {
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String[] args) {
-        
-        
-        Sonido cancion = new Sonido();
-        
-        String path = ""; //C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\music\\lofi.wav";
         
         FileManager archivo = new FileManager();
         
@@ -31,12 +27,13 @@ public class Tetris {
         
         TopResultados mejores = new TopResultados();
         
-        MenuInicio inicio = new MenuInicio(cancion,path,mejores,jugadaspath,archivo,memoria);
+        MenuInicio inicio = new MenuInicio(mejores,jugadaspath,archivo,memoria);
         
         inicio.setVisible(true);
         
         
         
     }
+
     
 }

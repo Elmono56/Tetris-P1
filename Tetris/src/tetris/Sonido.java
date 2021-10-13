@@ -6,9 +6,14 @@
 package tetris;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
@@ -16,40 +21,39 @@ import javax.sound.sampled.Clip;
  */
 public class Sonido {
     
-    public Sonido (){
-    }
+    String filepath;
+    File musicpath;
+    AudioInputStream music;
+    Clip clip;
     
-    public void playMusic(String filepath){
-        try{
-            File musicpath = new File(filepath);
-            
-            if (musicpath.exists()){
-                AudioInputStream music = AudioSystem.getAudioInputStream(musicpath);
-                Clip clip = AudioSystem.getClip();
-                clip.open(music);
-                clip.start();
-            }
-            else{
-                System.out.println("No existe el audio");
-            }
-        }
-        catch (Exception e){
-            
-        }
-    }
-    
-    public void stopMusic(String filepath){
-        try{
-            File musicpath = new File(filepath);
-            AudioInputStream music = AudioSystem.getAudioInputStream(musicpath);
+    public Sonido () throws UnsupportedAudioFileException, LineUnavailableException{
+        this.filepath ="C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\music\\lofi.wav";
+        this.musicpath = new File(filepath);
+        try {
+            this.music = AudioSystem.getAudioInputStream(musicpath);
             Clip clip = AudioSystem.getClip();
-            long clipTimePosition = clip.getMicrosecondPosition();
-            clip.stop();
+        } catch (IOException ex) {
+            System.out.println("No existe el audio");
         }
-        catch (Exception e){
-            
-        }
+        
+        
     }
+    
+    public void playMusic(){
+        
+        try {
+            this.clip.open(music);
+            this.clip.start();
+        } catch (LineUnavailableException ex) {
+            Logger.getLogger(Sonido.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Sonido.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+    }
+    
+    public void stopMusic(){
+        clip.stop();
+    }
 }
 

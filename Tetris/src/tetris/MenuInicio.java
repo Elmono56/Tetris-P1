@@ -17,8 +17,6 @@ public class MenuInicio extends javax.swing.JFrame {
     
     private TopResultados mejoresjugadas;
     private ArrayList<Integer> puntajes;
-    private Sonido cancion;
-    private String path;
     private String jugadaspath;
     private FileManager archivo;
     private String pathMemoria;
@@ -30,11 +28,9 @@ public class MenuInicio extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
-    public MenuInicio(Sonido cancion, String path, TopResultados mejores,String jugadaspath,FileManager archivo,String memoria) {
+    public MenuInicio(TopResultados mejores,String jugadaspath,FileManager archivo,String memoria) {
         this.mejoresjugadas = mejores;
         this.puntajes = archivo.getPuntajes(jugadaspath);
-        this.cancion = cancion;
-        this.path = path;
         this.jugadaspath = jugadaspath;
         this.archivo = archivo;
         this.mejoresjugadas.setArchivo(archivo);
@@ -151,7 +147,7 @@ public class MenuInicio extends javax.swing.JFrame {
 
     private void btnempezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnempezarActionPerformed
         this.archivo.cleanFile(jugadaspath);
-        PantallaJuego tetrisgame = new PantallaJuego(cancion,path,jugadaspath,archivo,pathMemoria);
+        PantallaJuego tetrisgame = new PantallaJuego(jugadaspath,archivo,pathMemoria);
         tetrisgame.setPuntajes(this.puntajes);
         tetrisgame.inicio();
         tetrisgame.setVisible(true);
@@ -184,7 +180,7 @@ public class MenuInicio extends javax.swing.JFrame {
     private void btncargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargarActionPerformed
         
         try{
-            PantallaJuego tetrisgame = new PantallaJuego(cancion,path,pathMemoria,archivo,finales);
+            PantallaJuego tetrisgame = new PantallaJuego(pathMemoria,archivo,finales);
            
             this.pathMemoria=JOptionPane.showInputDialog(boxguardar, "favor ingrese el nombre del archiv", "ABRIR", 1).toUpperCase();
              

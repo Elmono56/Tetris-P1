@@ -6,6 +6,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -20,7 +24,6 @@ public class PantallaJuego extends JFrame {
     private CronoThread cronometro;
     private ThreadBloque hilo;
     private Sonido cancion;
-    private String path;
     private ArrayList<Integer> puntajes;
     private String jugadaspath;
     private FileManager archivo;
@@ -29,28 +32,33 @@ public class PantallaJuego extends JFrame {
     private FileManager datos;
     private Guardar boxGuardar;
             
-    public PantallaJuego(Sonido cancion, String path,String jugadaspath,FileManager archivo,String memoria) {
+    public PantallaJuego(String jugadaspath,FileManager archivo,String memoria) {
         this.cronometro = new CronoThread(this);
-        activarTodo(cancion,path,jugadaspath,archivo);
+        activarTodo(jugadaspath,archivo);
         matrizJuego=new MatrizJuego(pantalladeJuego,JLabelFig2,JLabelFig3);
         this.add(matrizJuego);
     }
     
-    public PantallaJuego(Sonido cancion, String path,String jugadaspath,FileManager archivo,Color[][] aux){
+    public PantallaJuego(String jugadaspath,FileManager archivo,Color[][] aux){
         this.cronometro = new CronoThread(this);
-        activarTodo(cancion,path,jugadaspath,archivo);
+        activarTodo(jugadaspath,archivo);
         matrizJuego=new MatrizJuego(pantalladeJuego,JLabelFig2,JLabelFig3,aux);
         this.add(matrizJuego);
     }
     
-    public void activarTodo(Sonido cancion, String path,String jugadaspath,FileManager archivo){
+    public void activarTodo(String jugadaspath,FileManager archivo){
         initComponents();
         fondo1.setVisible(true);//panel izq
         fondo2.setVisible(true);//panel der
         JLabelFig2.setVisible(true);
         JLabelFig3.setVisible(true);
-        this.cancion = cancion;
-        this.path = path;
+        try {
+            this.cancion = new Sonido();
+        } catch (UnsupportedAudioFileException ex) {
+            
+        } catch (LineUnavailableException ex) {
+            
+        }
         this.datos = null;
         this.jugadaspath = jugadaspath;
         this.archivo = archivo;
@@ -69,10 +77,10 @@ public class PantallaJuego extends JFrame {
     }
     
     public void inicio(){
-        this.hilo = new ThreadBloque(matrizJuego,this);
+        this.hilo = new ThreadBloque(matrizJuego,this,this.cancion);
         this.hilo.start();
         this.cronometro.start();
-        this.cancion.playMusic(this.path);
+        this.cancion.playMusic();
     }
     public void actualizarPuntos(int puntos){
         this.txtPuntos.setText(""+puntos);
@@ -134,7 +142,7 @@ public void activarListener(KeyListener listener){
         
         if (largo==0){
             this.puntajes.add(cantpuntos);
-            //this.archivo.writeToFile(jugadaspath, puntos);
+            this.archivo.writeToFile(jugadaspath, puntos);
         }
         else if (largo<10){
             this.puntajes.add(cantpuntos);
@@ -429,11 +437,13 @@ public void activarListener(KeyListener listener){
     private void btnpausarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpausarActionPerformed
         this.cronometro.pauseThreadCrono();
         this.hilo.pauseThread();
+        this.cancion.stopMusic();
     }//GEN-LAST:event_btnpausarActionPerformed
 
     private void btnreanudarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnreanudarActionPerformed
         this.cronometro.reanudarThreadCrono();
         this.hilo.reanudarThread();
+        this.cancion.playMusic();
     }//GEN-LAST:event_btnreanudarActionPerformed
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
