@@ -146,9 +146,7 @@ public class MenuInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_btntop10ActionPerformed
 
     private void btnempezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnempezarActionPerformed
-        this.archivo.cleanFile(jugadaspath);
-        PantallaJuego tetrisgame = new PantallaJuego(jugadaspath,archivo,pathMemoria);
-        tetrisgame.setPuntajes(this.puntajes);
+        PantallaJuego tetrisgame = new PantallaJuego(jugadaspath,archivo,pathMemoria,puntajes);
         tetrisgame.inicio();
         tetrisgame.setVisible(true);
         tetrisgame.setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -180,7 +178,7 @@ public class MenuInicio extends javax.swing.JFrame {
     private void btncargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargarActionPerformed
         
         try{
-            PantallaJuego tetrisgame = new PantallaJuego(pathMemoria,archivo,finales);
+            PantallaJuego tetrisgame = new PantallaJuego(pathMemoria,archivo,finales,puntajes);
            
             this.pathMemoria=JOptionPane.showInputDialog(boxguardar, "favor ingrese el nombre del archiv", "ABRIR", 1).toUpperCase();
              

@@ -61,7 +61,8 @@ public class ThreadBloque extends Thread{
     
     @Override
     public void run(){
-        
+        pantalla.actualizarPuntos(0);
+        pantalla.actualizarLineas(0);
         while(isRunning){
             
             matrizJuego.f3.setIcon(getColor(f3));
@@ -89,17 +90,17 @@ public class ThreadBloque extends Thread{
            if(matrizJuego.limiteTope()){//si el bloque toca el tope de la matriz se termina el juego
                this.pantalla.detenerCronometro();
                 JOptionPane.showMessageDialog(pantalla, "PERDISTE","Error", JOptionPane.ERROR_MESSAGE);
-                this.pantalla.guardarPuntaje(); //REVISAR
-                this.pantalla.setVisible(false);
                 this.cancion.stopMusic();
+                this.pantalla.guardarPuntaje();
+                this.pantalla.setVisible(false);
                 break;
            }
            if (ganador){
                this.pantalla.detenerCronometro();
                JOptionPane.showMessageDialog(pantalla, "GANASTE","FELICIDADES", JOptionPane.INFORMATION_MESSAGE);
-               this.pantalla.guardarPuntaje(); //REVISAR
-               this.pantalla.setVisible(false);
                this.cancion.stopMusic();
+               this.pantalla.guardarPuntaje();
+               this.pantalla.setVisible(false);
                break;
            }
             matrizJuego.pegarEnMatriz();

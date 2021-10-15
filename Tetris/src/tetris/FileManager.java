@@ -58,7 +58,7 @@ public class FileManager {
         try 
         {
             BufferedWriter bw = new BufferedWriter(new FileWriter(filepath, false));
-            bw.write("");
+            bw.write('0');
             
         }
         catch (IOException e) {
@@ -71,12 +71,14 @@ public class FileManager {
         try(BufferedReader br = new BufferedReader(new FileReader(filepath))) {
             ArrayList<Integer> puntajes = new ArrayList<Integer>();
             String line;
+            
             while ((line = br.readLine()) != null) {
                 int numero = (int) Integer.parseInt(line);
                 puntajes.add(numero);
             }
+            
             if (puntajes.isEmpty()==true){
-                return null;
+                return puntajes;
             }
             Collections.sort(puntajes, Collections.reverseOrder());
             return puntajes;

@@ -31,7 +31,8 @@ public class Sonido {
         this.musicpath = new File(filepath);
         try {
             this.music = AudioSystem.getAudioInputStream(musicpath);
-            Clip clip = AudioSystem.getClip();
+            this.clip = AudioSystem.getClip();
+            this.clip.open(music);
         } catch (IOException ex) {
             System.out.println("No existe el audio");
         }
@@ -41,14 +42,7 @@ public class Sonido {
     
     public void playMusic(){
         
-        try {
-            this.clip.open(music);
-            this.clip.start();
-        } catch (LineUnavailableException ex) {
-            Logger.getLogger(Sonido.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Sonido.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.clip.start();
 
     }
     

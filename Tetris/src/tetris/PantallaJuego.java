@@ -32,21 +32,21 @@ public class PantallaJuego extends JFrame {
     private FileManager datos;
     private Guardar boxGuardar;
             
-    public PantallaJuego(String jugadaspath,FileManager archivo,String memoria) {
+    public PantallaJuego(String jugadaspath,FileManager archivo,String memoria,ArrayList<Integer> puntajes) {
         this.cronometro = new CronoThread(this);
-        activarTodo(jugadaspath,archivo);
+        activarTodo(jugadaspath,archivo,puntajes);
         matrizJuego=new MatrizJuego(pantalladeJuego,JLabelFig2,JLabelFig3);
         this.add(matrizJuego);
     }
     
-    public PantallaJuego(String jugadaspath,FileManager archivo,Color[][] aux){
+    public PantallaJuego(String jugadaspath,FileManager archivo,Color[][] aux,ArrayList<Integer> puntajes){
         this.cronometro = new CronoThread(this);
-        activarTodo(jugadaspath,archivo);
+        activarTodo(jugadaspath,archivo,puntajes);
         matrizJuego=new MatrizJuego(pantalladeJuego,JLabelFig2,JLabelFig3,aux);
         this.add(matrizJuego);
     }
     
-    public void activarTodo(String jugadaspath,FileManager archivo){
+    public void activarTodo(String jugadaspath,FileManager archivo,ArrayList<Integer> puntajes){
         initComponents();
         fondo1.setVisible(true);//panel izq
         fondo2.setVisible(true);//panel der
@@ -55,7 +55,7 @@ public class PantallaJuego extends JFrame {
         try {
             this.cancion = new Sonido();
         } catch (UnsupportedAudioFileException ex) {
-            
+            System.out.println("");
         } catch (LineUnavailableException ex) {
             
         }
@@ -65,7 +65,10 @@ public class PantallaJuego extends JFrame {
         this.pathMemoria = "";
         this.guardar = "";
         activarListener(listener);
+        this.cancion.playMusic();
         this.addKeyListener(listener);
+        this.puntajes = puntajes;
+        
     }
 
     public void setPuntajes(ArrayList<Integer> puntajes) {
@@ -80,7 +83,6 @@ public class PantallaJuego extends JFrame {
         this.hilo = new ThreadBloque(matrizJuego,this,this.cancion);
         this.hilo.start();
         this.cronometro.start();
-        this.cancion.playMusic();
     }
     public void actualizarPuntos(int puntos){
         this.txtPuntos.setText(""+puntos);
@@ -135,37 +137,79 @@ public void activarListener(KeyListener listener){
 
     public void guardarPuntaje(){
         String puntos = txtPuntos.getText();
-        int cantpuntos = Integer.parseInt(puntos);
-        this.puntajes = archivo.getPuntajes(jugadaspath);
-        int largo = this.puntajes.size();
+        int cantpuntos;
+        try {
+            cantpuntos = Integer.parseInt(puntos);
+        }
+        catch (Exception e){
+            cantpuntos=0;
+            puntos="0";
+        }
+        
+        int largo;
+        try{
+            largo = this.puntajes.size();
+        }
+        catch (Exception e){
+            largo = 0;
+        }
+        
+        
         String puntosfinal = "";
+        
         
         if (largo==0){
             this.puntajes.add(cantpuntos);
+            this.archivo.cleanFile(jugadaspath);
             this.archivo.writeToFile(jugadaspath, puntos);
         }
         else if (largo<10){
+            this.archivo.cleanFile(jugadaspath);
+            
             this.puntajes.add(cantpuntos);
              Collections.sort(puntajes, Collections.reverseOrder());
-             puntos = "\n"+puntos;
-             //this.archivo.writeToFile(jugadaspath, puntos);
+             
+             int numf = puntajes.get(largo);
+             
+             int cont = 0;
+             
+             for (int puntaje : puntajes){
+                 if (puntaje!=numf){
+                     puntosfinal = puntosfinal+puntaje+"\n";
+                 }
+                 else{
+                     puntosfinal = puntosfinal+puntaje;
+                 }
+             }
+            
+            this.archivo.writeToFile(jugadaspath, puntosfinal);
         }
         else{
-            this.archivo.cleanFile(jugadaspath);
-            Collections.sort(puntajes);
+            Collections.sort(puntajes, Collections.reverseOrder());
             for (int puntaje : puntajes){
                 if (puntaje<cantpuntos){
-                    puntajes.remove(puntaje);
+                    puntajes.remove(puntajes.get(9));
                     puntajes.add(cantpuntos);
                     break;
                 }
             }
-            for (int puntaje : puntajes){
-                puntosfinal = puntosfinal + puntaje + "\n";
-            }
-            //this.archivo.writeToFile(jugadaspath, puntosfinal);
             Collections.sort(puntajes, Collections.reverseOrder());
+            
+            int numf = puntajes.get(9);
+             
+             for (int puntaje : puntajes){
+                 if (puntaje!=numf){
+                     puntosfinal = puntosfinal+puntaje+"\n";
+                 }
+                 else{
+                     puntosfinal = puntosfinal+puntaje;
+                 }
+             }
+             
+            this.archivo.cleanFile(jugadaspath);
+            this.archivo.writeToFile(jugadaspath, puntosfinal);
         }
+        
     }
 
     public void setGanador(boolean sino){
