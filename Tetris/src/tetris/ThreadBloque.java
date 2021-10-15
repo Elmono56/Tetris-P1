@@ -9,15 +9,15 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author chave
+ * @author andres chaves y pablo hidalgo
  */
 public class ThreadBloque extends Thread{
     
     private MatrizJuego matrizJuego;
     private PantallaJuego pantalla;
     
-    private int lineas;
-    private int puntaje;
+    private int lineas=0;
+    private int puntaje=0;
     private int aux;
     private int nivel=1;
     private int f1,f2,f3;
@@ -31,9 +31,8 @@ public class ThreadBloque extends Thread{
     public String resu;
     private boolean ganador = false;
     private Sonido cancion;
+    private int cargar;
 
-    
-    
     public ThreadBloque(MatrizJuego matrizJuego, PantallaJuego pantalla,Sonido cancion){
         this.matrizJuego=matrizJuego;
         this.pantalla=pantalla;
@@ -43,31 +42,27 @@ public class ThreadBloque extends Thread{
         this.f2=r.nextInt(4);
         this.f3=r.nextInt(4);
         this.cancion = cancion;
-
     }
     
-    public void setFigura1(int numero){
-        this.f1 = numero;
+    public ThreadBloque(MatrizJuego matrizJuego, PantallaJuego pantalla,Sonido cancion,int f1, int f2, int f3){
+        this.matrizJuego=matrizJuego;
+        this.pantalla=pantalla;
+        this.resu="";
+        r= new Random();
+        this.f1=f1;
+        this.f2=f2;
+        this.f3=f3;
+        this.cancion = cancion;
     }
-    
-    public void setFigura2(int numero){
-        this.f2 = numero;
-    }
-    
-    public void setFigura3(int numero){
-        this.f3 = numero;
-    }
-    
     
     @Override
     public void run(){
-        pantalla.actualizarPuntos(0);
-        pantalla.actualizarLineas(0);
         while(isRunning){
             
-            matrizJuego.f3.setIcon(getColor(f3));
-            matrizJuego.f2.setIcon(getColor(f2));
-            matrizJuego.generarBloques(f1);
+            matrizJuego.f3.setIcon(getColor(this.f3));
+            matrizJuego.f2.setIcon(getColor(this.f2));
+            matrizJuego.generarBloques(this.f1);
+            cargar = f1;
             f1=f2;
             f2=f3;
             f3=r.nextInt(4);
@@ -75,17 +70,15 @@ public class ThreadBloque extends Thread{
            pantalla.actualizarNivel(this.nivel);
            while(matrizJuego.limiteFinal()){//minetras que pueda seguir cayendo
                     matrizJuego.caer();
-                try {
+                try{
                      Thread.sleep(2000-(nivel*150));
                      while (isPaused){
                          sleep(500);
                      }
-                     
-
-                 } catch (InterruptedException ex) {
+                 }
+                catch (InterruptedException ex) {
                      Logger.getLogger(ThreadBloque.class.getName()).log(Level.SEVERE, null, ex);
                  }
-               
            } 
            if(matrizJuego.limiteTope()){//si el bloque toca el tope de la matriz se termina el juego
                this.pantalla.detenerCronometro();
@@ -114,10 +107,8 @@ public class ThreadBloque extends Thread{
             
             }
             pantalla.actualizarLineas(lineas);
-            
         }
     }
-    
     
     private ImageIcon getColor(int num){
         switch(num){
@@ -129,25 +120,18 @@ public class ThreadBloque extends Thread{
          return i1;
     }
     
-    
-    
-    
     public String procesoGuardado(){
-        
         resu+=matrizJuego.revisar();
         resu+=nivel+"\n"; //nivel
         resu+=puntaje+"\n"; //puntos
         resu+=lineas+"\n"; //lineas
-        resu+=f1+"\n"; //F1
-        resu+=f2+"\n"; //F2
-        resu+=f3+"\n"; //F3
+        resu+=cargar+"\n"; //F1
+        resu+=f1+"\n"; //F2
+        resu+=f2+"\n"; //F3
         return resu;
     }
 
-
-    
     public void aumentarNivel(){
-        
         if (nivel<10){
             this.nivel= this.nivel +1;
             pantalla.actualizarNivel(this.nivel);
@@ -157,7 +141,6 @@ public class ThreadBloque extends Thread{
     public void setIsRunning(boolean estado){
         this.isRunning = estado;
     }
-    
     
     public void setGanador(boolean sino){
         this.ganador = sino;

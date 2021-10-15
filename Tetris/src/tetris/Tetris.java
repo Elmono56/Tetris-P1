@@ -7,8 +7,9 @@ package tetris;
 
 /**
  *
- * @author chave
+ * @author andres chaves y pablo hidalgo
  */
+
 public class Tetris {
 
     /**
@@ -19,7 +20,7 @@ public class Tetris {
         
         FileManager archivo = new FileManager();
         
-        String jugadaspath = "C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\src\\tetris\\MejoresJugadas.txt";
+        String jugadaspath = "C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\src\\tetris\\MejoresJugadas.txt"; 
         
         String memoria = "C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\src\\tetris\\memoria";
         
@@ -30,10 +31,6 @@ public class Tetris {
         MenuInicio inicio = new MenuInicio(mejores,jugadaspath,archivo,memoria);
         
         inicio.setVisible(true);
-        
-        
-        
     }
-
     
 }

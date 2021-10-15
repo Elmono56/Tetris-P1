@@ -6,8 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
@@ -15,8 +13,9 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author chave
+ * @author andres chaves y pablo hidalgo
  */
+
 public class PantallaJuego extends JFrame {
 
     private MatrizJuego matrizJuego;
@@ -39,11 +38,16 @@ public class PantallaJuego extends JFrame {
         this.add(matrizJuego);
     }
     
-    public PantallaJuego(String jugadaspath,FileManager archivo,Color[][] aux,ArrayList<Integer> puntajes){
-        this.cronometro = new CronoThread(this);
+    public PantallaJuego(String jugadaspath,FileManager archivo,Color[][] aux,ArrayList<Integer> puntajes,int f1, int f2, int f3){
         activarTodo(jugadaspath,archivo,puntajes);
         matrizJuego=new MatrizJuego(pantalladeJuego,JLabelFig2,JLabelFig3,aux);
         this.add(matrizJuego);
+        this.cronometro = new CronoThread(this);
+        this.hilo = new ThreadBloque(matrizJuego,this,this.cancion,f1,f2,f3);
+    }
+    
+    public CronoThread getCrono(){
+        return this.cronometro;
     }
     
     public void activarTodo(String jugadaspath,FileManager archivo,ArrayList<Integer> puntajes){
@@ -54,9 +58,11 @@ public class PantallaJuego extends JFrame {
         JLabelFig3.setVisible(true);
         try {
             this.cancion = new Sonido();
-        } catch (UnsupportedAudioFileException ex) {
-            System.out.println("");
-        } catch (LineUnavailableException ex) {
+        }
+        catch (UnsupportedAudioFileException ex) {
+            
+        }
+        catch (LineUnavailableException ex) {
             
         }
         this.datos = null;
@@ -68,7 +74,6 @@ public class PantallaJuego extends JFrame {
         this.cancion.playMusic();
         this.addKeyListener(listener);
         this.puntajes = puntajes;
-        
     }
 
     public void setPuntajes(ArrayList<Integer> puntajes) {
@@ -79,6 +84,14 @@ public class PantallaJuego extends JFrame {
         return this.hilo;
     }
     
+    public void setHilo(ThreadBloque hilo){
+        this.hilo = hilo;
+    }
+    
+    public void inicioCarga(){
+        this.hilo.start();
+        this.cronometro.start();
+    }
     public void inicio(){
         this.hilo = new ThreadBloque(matrizJuego,this,this.cancion);
         this.hilo.start();
@@ -104,30 +117,23 @@ public class PantallaJuego extends JFrame {
         this.hilo.aumentarNivel();
     }
 
-
 public void activarListener(KeyListener listener){
-
     this.listener= new KeyListener() {
         @Override
         public void keyTyped(KeyEvent e) {
         }
-
         @Override
         public void keyPressed(KeyEvent e) {
             int key= e.getKeyCode();   
             if(key ==37)matrizJuego.izquierda();
             if(key ==38)matrizJuego.rotar();
             if(key ==39)matrizJuego.derecha();       
-            if(key ==40)matrizJuego.caer();       
-        
+            if(key ==40)matrizJuego.caer();
         }
-
         @Override
         public void keyReleased(KeyEvent e) {
-
-            }
+        }
      };
-
     }
 
     public int getNivel(){
@@ -154,9 +160,7 @@ public void activarListener(KeyListener listener){
             largo = 0;
         }
         
-        
         String puntosfinal = "";
-        
         
         if (largo==0){
             this.puntajes.add(cantpuntos);
@@ -165,14 +169,9 @@ public void activarListener(KeyListener listener){
         }
         else if (largo<10){
             this.archivo.cleanFile(jugadaspath);
-            
             this.puntajes.add(cantpuntos);
              Collections.sort(puntajes, Collections.reverseOrder());
-             
              int numf = puntajes.get(largo);
-             
-             int cont = 0;
-             
              for (int puntaje : puntajes){
                  if (puntaje!=numf){
                      puntosfinal = puntosfinal+puntaje+"\n";
@@ -181,7 +180,6 @@ public void activarListener(KeyListener listener){
                      puntosfinal = puntosfinal+puntaje;
                  }
              }
-            
             this.archivo.writeToFile(jugadaspath, puntosfinal);
         }
         else{
@@ -194,9 +192,7 @@ public void activarListener(KeyListener listener){
                 }
             }
             Collections.sort(puntajes, Collections.reverseOrder());
-            
             int numf = puntajes.get(9);
-             
              for (int puntaje : puntajes){
                  if (puntaje!=numf){
                      puntosfinal = puntosfinal+puntaje+"\n";
@@ -205,11 +201,9 @@ public void activarListener(KeyListener listener){
                      puntosfinal = puntosfinal+puntaje;
                  }
              }
-             
             this.archivo.cleanFile(jugadaspath);
             this.archivo.writeToFile(jugadaspath, puntosfinal);
         }
-        
     }
 
     public void setGanador(boolean sino){
@@ -494,7 +488,7 @@ public void activarListener(KeyListener listener){
         btnpausar.doClick();
         this.guardar=this.hilo.procesoGuardado();
         this.guardar+=this.cronometro.getSeconds()+"\n"; //segundos
-        this.guardar+=cronometro.getMinutes()+"\n"; //minutos
+        this.guardar+=cronometro.getMinutes(); //minutos
         this.datos=new FileManager();
         this.pathMemoria+=JOptionPane.showInputDialog(boxGuardar, "favor ingrese su nombre", "GUARDAR", 2).toUpperCase();
         this.datos.createFile(this.pathMemoria);

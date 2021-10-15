@@ -9,8 +9,9 @@ import java.util.ArrayList;
 
 /**
  *
- * @author hidal
+ * @author andres chaves y pablo hidalgo
  */
+
 public class TopResultados extends javax.swing.JFrame {
     
     private ArrayList<Integer> puntajes;
@@ -55,7 +56,6 @@ public class TopResultados extends javax.swing.JFrame {
                 }
             this.txtAreaTop.setText(auxiliar);
             }
-        
     }
     
     

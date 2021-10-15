@@ -11,8 +11,9 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author hidal
+ * @author andres chaves y pablo hidalgo
  */
+
 public class MenuInicio extends javax.swing.JFrame {
     
     private TopResultados mejoresjugadas;
@@ -165,8 +166,7 @@ public class MenuInicio extends javax.swing.JFrame {
                 pos++;
             }
         }
-       return cargar;    
-       
+       return cargar;
     }
 
     private String setNiceFormat(int number){
@@ -176,58 +176,59 @@ public class MenuInicio extends javax.swing.JFrame {
     }
     
     private void btncargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargarActionPerformed
-        
         try{
-            PantallaJuego tetrisgame = new PantallaJuego(pathMemoria,archivo,finales,puntajes);
-           
             this.pathMemoria=JOptionPane.showInputDialog(boxguardar, "favor ingrese el nombre del archiv", "ABRIR", 1).toUpperCase();
-             
             ArrayList<String> partidag = archivo.getDatosFromArchivo(pathMemoria);
+            int numero, nivel=0, puntos=0, lineas=0, f1=0, f2=0, f3=0, segundos=0, minutos=0;
             
-            String tiempo ="";
-            
-            for (int i = 0; i<partidag.size()-1;i++){
-                
+            for (int i = 0; i<partidag.size();i++){
                 String dato = partidag.get(i);
                 
                 if (i==0){ //matriz
                     this.finales=valoresMatriz(dato.substring(0, 200));    
                 }
                 else if (i==1){ //nivel
-                    int numero = (int) Integer.parseInt(dato);
-                    tetrisgame.actualizarNivel(numero);
+                    numero = (int) Integer.parseInt(dato);
+                    nivel = numero;
                 }
-                else if (i==2){ //ountos
-                    int numero = (int) Integer.parseInt(dato);
-                    tetrisgame.actualizarPuntos(numero);
+                else if (i==2){ //puntos
+                    numero = (int) Integer.parseInt(dato);
+                    puntos = numero;
                 }
-                else if (i==3){ //F1
-                    int numero = (int) Integer.parseInt(dato);
-                    ThreadBloque hilo = tetrisgame.getHilo();
-                    hilo.setFigura1(numero);
+                else if (i==3){ //lineas
+                    numero = (int) Integer.parseInt(dato);
+                    lineas = numero;
                 }
-                else if (i==4){ //F2
-                    int numero = (int) Integer.parseInt(dato);
-                    ThreadBloque hilo = tetrisgame.getHilo();
-                    hilo.setFigura2(numero);
+                else if (i==4){ //F1
+                    numero = (int) Integer.parseInt(dato);
+                    f1 = numero;
                 }
-                else if (i==5){ //F3
-                    int numero = (int) Integer.parseInt(dato);
-                    ThreadBloque hilo = tetrisgame.getHilo();
-                    hilo.setFigura3(numero);
+                else if (i==5){ //F2
+                    numero = (int) Integer.parseInt(dato);
+                    f2 = numero;
                 }
-                else if (i==6){ //segundos
-                    int numero = (int) Integer.parseInt(dato);
-                    tiempo = setNiceFormat(numero) + ":";
-                    
+                else if (i==6){ //F3
+                    numero = (int) Integer.parseInt(dato);
+                    f3 = numero;
                 }
-                else if (i==7){ //minutos
-                    int numero = (int) Integer.parseInt(dato);
-                    tiempo = tiempo + setNiceFormat(numero);
-                    tetrisgame.setTextToCrono(tiempo);
+                else if (i==7){ //segundos
+                    numero = (int) Integer.parseInt(dato);
+                    segundos = numero;
+                }
+                else if (i==8){ //minutos
+                    numero = (int) Integer.parseInt(dato);
+                    minutos = numero;
                 }
             }
-            tetrisgame.inicio();
+            
+            PantallaJuego tetrisgame = new PantallaJuego(jugadaspath,archivo,finales,puntajes,f1,f2,f3);
+            tetrisgame.actualizarNivel(nivel);
+            tetrisgame.actualizarLineas(lineas);
+            tetrisgame.actualizarPuntos(puntos);
+            CronoThread crono = tetrisgame.getCrono();
+            crono.setSegundos(segundos);
+            crono.setMinutos(minutos);
+            tetrisgame.inicioCarga();
             tetrisgame.setVisible(true);
             tetrisgame.setDefaultCloseOperation(HIDE_ON_CLOSE);
         }

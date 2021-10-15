@@ -7,8 +7,6 @@ package tetris;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -17,8 +15,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  *
- * @author hidal
+ * @author andres chaves y pablo hidalgo
  */
+
 public class Sonido {
     
     String filepath;
@@ -29,21 +28,18 @@ public class Sonido {
     public Sonido () throws UnsupportedAudioFileException, LineUnavailableException{
         this.filepath ="C:\\Users\\hidal\\Desktop\\POO\\Tetris-P1\\Tetris\\music\\lofi.wav";
         this.musicpath = new File(filepath);
-        try {
+        try{
             this.music = AudioSystem.getAudioInputStream(musicpath);
             this.clip = AudioSystem.getClip();
             this.clip.open(music);
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             System.out.println("No existe el audio");
         }
-        
-        
     }
     
     public void playMusic(){
-        
         this.clip.start();
-
     }
     
     public void stopMusic(){

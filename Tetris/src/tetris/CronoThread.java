@@ -10,8 +10,9 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author hidal
+ * @author andres chaves y pablo hidalgo
  */
+
 public class CronoThread extends Thread{
     private PantallaJuego refPantalla;
     private boolean isRunning = true;
@@ -22,7 +23,6 @@ public class CronoThread extends Thread{
     public CronoThread(PantallaJuego refPantalla) {
         this.refPantalla = refPantalla;
     }
-    
     
     public void run(){
         
@@ -42,11 +42,9 @@ public class CronoThread extends Thread{
                 
                 String newTime = setNiceFormat(minutes) + ":" + setNiceFormat(seconds); 
                 refPantalla.setTextToCrono(newTime);
-                
                 if (refPantalla.getNivel()==9 & minutes==2){
                     this.refPantalla.setGanador(true);
                 }
-                
                 if ((minutes%2)==0 & (minutes>1)){
                     refPantalla.aumentarLevel();
                     seconds=0;
@@ -85,6 +83,13 @@ public class CronoThread extends Thread{
     public String getMinutes() {
         return ""+minutes;
     }
-
+    
+    public void setSegundos(int seg){
+        this.seconds = seg;
+    }
+    
+    public void setMinutos(int min){
+        this.minutes = min;
+    }
     
 }

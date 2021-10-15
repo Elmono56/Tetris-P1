@@ -5,8 +5,9 @@ import java.awt.Color;
 
 /**
  *
- * @author chave
+ * @author andres chaves y pablo hidalgo
  */
+
 public class Ele extends Bloques{
     
     public Ele() {

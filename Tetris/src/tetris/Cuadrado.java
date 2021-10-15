@@ -9,13 +9,13 @@ import java.awt.Color;
 
 /**
  *
- * @author chave
+ * @author andres chaves y pablo hidalgo
  */
+
 public class Cuadrado extends Bloques{
     
         public Cuadrado(){
         super(new int[][]{{1,1},{1,1}},Color.YELLOW);
         }
         
-    
 }

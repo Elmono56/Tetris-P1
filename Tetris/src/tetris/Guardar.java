@@ -7,13 +7,11 @@ package tetris;
 
 /**
  *
- * @author hidal
+ * @author andres chaves y pablo hidalgo
  */
-public class Guardar extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Guardar
-     */
+public class Guardar extends javax.swing.JFrame {
+    
     public Guardar() {
         initComponents();
     }

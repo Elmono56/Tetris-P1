@@ -9,15 +9,15 @@ import java.awt.Color;
 
 /**
  *
- * @author chave
+ * @author andres chaves y pablo hidalgo
  */
+
 public class Rectangulo extends Bloques{
     
     public Rectangulo(){
         super(new int[][]{{1,1,1,1}},Color.CYAN);
         }
         
-    
     @Override
     public void rotar(){
         super.rotar();
@@ -28,10 +28,19 @@ public class Rectangulo extends Bloques{
         }else{
             this.setX(this.getX()-1);
             this.setY(this.getY()+1);
-        
-        
         }
-        
     }
     
+    @Override
+    public void regresar(){
+        super.regresar();
+        if(this.getAncho()==1){//vertical
+            this.setX(this.getX()+1);
+            this.setY(this.getY()-1);
+        }
+        else{ //horizontal
+            this.setX(this.getX()-1);
+            this.setY(this.getY()+1);
+        }
+    }
 }

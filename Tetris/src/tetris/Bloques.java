@@ -5,9 +5,8 @@ import java.util.Random;
 
 /**
  *
- * @author chave
+ * @author andres chaves y pablo hidalgo
  */
-
 
 public class Bloques {
     private int [][] tamaño;
@@ -44,7 +43,6 @@ public class Bloques {
     }
     
     public void ponerBloque(){
-        
         Random num= new Random();
         formaActual=3;
         tamaño= formas[formaActual];
@@ -52,10 +50,7 @@ public class Bloques {
         this.setY(-4);//medida para que aparezca arriba de la matriz }
     }
  
-
-
-//metodos de reenviar la pos del bloque
-   
+    //metodos de reenviar la pos del bloque
     public int revisarIzquierda(){
         return x;
     }
@@ -67,9 +62,6 @@ public class Bloques {
     public int revisarFinal(){
     return y+getAltura();
     }
-    
-    
-    
     
     //moviemientos del bloque
     public void caida(){
@@ -84,32 +76,20 @@ public class Bloques {
         x--;
     }
    
-    
     public void rotar(){
         formaActual++;
         if(formaActual>3)formaActual=0;
         tamaño = formas[formaActual];
-        
     }
    
-    
     public void regresar(){
         formaActual--;
         if(formaActual<0)formaActual=3;
         tamaño = formas[formaActual];
-        
     } 
     
     
-    
-    
-    
-    
-    
-    
-    
     //getter y setter
-
     public int[][] getTamaño() {
         return tamaño;
     }
@@ -140,6 +120,5 @@ public class Bloques {
     public void setY(int y) {
         this.y = y;
     }
-    
     
 }

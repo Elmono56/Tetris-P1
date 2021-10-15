@@ -11,14 +11,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
  *
- * @author hidal
+ * @author andres chaves y pablo hidalgo
  */
+
 public class FileManager {
     
     public void createFile (String path){
@@ -26,53 +26,47 @@ public class FileManager {
     }
     
     public void writeToFile(String path, String text){
-        try {
-            
+        try{
           FileWriter myWriter = new FileWriter(path, true);
           myWriter.write(text);
           myWriter.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
           e.printStackTrace();
         }
     }
     
     public String readFile(String filePath){
-        
         StringBuilder contentBuilder = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) 
-        {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))){
             String sCurrentLine;
-            while ((sCurrentLine = br.readLine()) != null) 
-            {
+            while ((sCurrentLine = br.readLine()) != null){
                 contentBuilder.append(sCurrentLine).append("\n");
             }
         } 
-        catch (IOException e) 
-        {
+        catch (IOException e){
             e.printStackTrace();
         }
         return contentBuilder.toString();
     }
     
     public void cleanFile(String filepath){
-        try 
-        {
+        try{
             BufferedWriter bw = new BufferedWriter(new FileWriter(filepath, false));
             bw.write('0');
-            
         }
-        catch (IOException e) {
+        catch (IOException e){
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
     }
     
     public ArrayList<Integer> getPuntajes(String filepath){
-        try(BufferedReader br = new BufferedReader(new FileReader(filepath))) {
+        try(BufferedReader br = new BufferedReader(new FileReader(filepath))){
+            
             ArrayList<Integer> puntajes = new ArrayList<Integer>();
             String line;
-            
-            while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null){
                 int numero = (int) Integer.parseInt(line);
                 puntajes.add(numero);
             }
@@ -80,6 +74,7 @@ public class FileManager {
             if (puntajes.isEmpty()==true){
                 return puntajes;
             }
+            
             Collections.sort(puntajes, Collections.reverseOrder());
             return puntajes;
         }
